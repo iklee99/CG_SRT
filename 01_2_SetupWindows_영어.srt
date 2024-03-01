@@ -1,0 +1,279 @@
+﻿1
+00:00:00,000 --> 00:00:04,210
+In this notebook we're going to talk about the setup for coding
+
+2
+00:00:04,210 --> 00:00:07,530
+OpenGL in PC Windows.
+
+3
+00:00:07,530 --> 00:00:09,710
+First of all, update
+
+4
+00:00:09,710 --> 00:00:12,560
+your PC drivers with your latest stuff.
+
+5
+00:00:12,560 --> 00:00:14,340
+It's not necessarily required,
+
+6
+00:00:14,340 --> 00:00:18,590
+but it's best to do it for the best possible outcome.
+
+7
+00:00:18,590 --> 00:00:21,290
+We're going to go to the Visual Studio page
+
+8
+00:00:21,290 --> 00:00:26,140
+and download the community version of the Visual Studio 2022.
+
+9
+00:00:26,140 --> 00:00:32,320
+Set "Desktop development with C++" as a workload.
+
+10
+00:00:32,320 --> 00:00:35,830
+Before you create a project in Visual Studio,
+
+11
+00:00:35,830 --> 00:00:38,770
+you better open "tools > projects and solutions > locations,"
+
+12
+00:00:38,770 --> 00:00:41,330
+and start setting up new project locations.
+
+13
+00:00:41,330 --> 00:00:43,440
+In this example, we're going to create a new project under a new folder,
+
+14
+00:00:43,440 --> 00:00:47,970
+so we set a new location for the project.
+
+15
+00:00:47,970 --> 00:00:52,430
+We're going to download all the external libraries.
+
+16
+00:00:52,430 --> 00:00:59,870
+At first, we download GLEW, GLFW, and the glm files.
+
+17
+00:00:59,870 --> 00:01:05,670
+Then uncompress glew-xxx.zip with the option of "uncompress here."
+
+18
+00:01:05,670 --> 00:01:10,100
+And rename this folder glew-xxx-win32 to GLEW.
+
+19
+00:01:10,100 --> 00:01:16,220
+Then, create a folder called "External Libs" at the same level as "projects" folder.
+
+20
+00:01:16,220 --> 00:01:21,380
+And, put the GLEW folder inside of External Libs.
+
+21
+00:01:21,380 --> 00:01:25,080
+The current folder structure is shown in the figure.
+
+22
+00:01:25,080 --> 00:01:29,920
+Under the projects folder our projects go into each of different sub folders.
+
+23
+00:01:29,920 --> 00:01:35,760
+Then, uncompress glfw-xxx.zip as the option: "uncompress here".
+
+24
+00:01:35,760 --> 00:01:41,760
+Then rename the GLFW-xx.WIN64 folder to GLFW.
+
+25
+00:01:41,760 --> 00:01:46,460
+And put the GLFW folder under External Libs.
+
+26
+00:01:46,460 --> 00:01:49,950
+After that, you can see the following folder hierarchy.
+
+27
+00:01:49,950 --> 00:01:54,100
+Uncompress GLM-xxx.zip with the option of "here."
+
+28
+00:01:54,100 --> 00:01:57,830
+Rename the glm folder to GLM.
+
+29
+00:01:57,830 --> 00:02:01,660
+Under GLM,  delete all except the glm folder.
+
+30
+00:02:01,660 --> 00:02:06,620
+Move the GLM folder and put it under the External Libs folder.
+
+31
+00:02:06,620 --> 00:02:11,600
+After installing GLM, the folder structure should look like this.
+
+32
+00:02:11,600 --> 00:02:17,680
+Start to edit the file: External Libs > GLM > glm > glm.hpp
+
+33
+00:02:17,680 --> 00:02:20,400
+and you add a line with a picture.
+
+34
+00:02:20,400 --> 00:02:25,440
+If you don't do that, you should add this line to every source file
+
+35
+00:02:25,440 --> 00:02:28,980
+before you include the glm.hpp,
+
+36
+00:02:28,980 --> 00:02:31,870
+and we don't want to do that, so do it now.
+
+37
+00:02:31,870 --> 00:02:34,960
+Now downloaded the example source files from LearnUs,
+
+38
+00:02:34,960 --> 00:02:41,260
+then, copy the "utils" folder to the same level as External Libs and projects.
+
+39
+00:02:41,260 --> 00:02:44,810
+So now the folder structure should be like this.
+
+40
+00:02:44,810 --> 00:02:49,140
+Now, let's  create a new project in Visual Studio.
+
+41
+00:02:49,140 --> 00:02:53,480
+Select Console App, C++, and then click "Next".
+
+42
+00:02:53,480 --> 00:02:57,830
+Select and fill the Project name, Location name, and Solution name,
+
+43
+00:02:57,830 --> 00:02:59,770
+and click the Create button.
+
+44
+00:02:59,770 --> 00:03:03,010
+In our example, Project and Solution names
+
+45
+00:03:03,010 --> 00:03:05,790
+are set to "00_HelloWindow".
+
+46
+00:03:05,790 --> 00:03:08,860
+Location is defined as the projects folder that we created earlier.
+
+47
+00:03:08,860 --> 00:03:14,080
+Among the source codes, find "hello_window.cpp" in 00_HelloWindow folder,
+
+48
+00:03:14,080 --> 00:03:21,780
+and copy the file into the source code folder in the project that we just created.
+
+49
+00:03:21,780 --> 00:03:27,570
+the source code folder is  00_HelloWindow / 00_HelloWindow.
+
+50
+00:03:27,570 --> 00:03:34,220
+If you have a shader files (.vs, .fs) and any texture image files,
+
+51
+00:03:34,220 --> 00:03:37,180
+you better copy them into the same source folder.
+
+52
+00:03:37,180 --> 00:03:40,840
+We'll see that in a later source project.
+
+53
+00:03:40,840 --> 00:03:46,010
+We'll add the hello_window.cpp that we just copied into our project.
+
+54
+00:03:46,010 --> 00:03:49,430
+In the solution explorer you'll find a menu by clicking the right mouse button click.
+
+55
+00:03:49,430 --> 00:03:53,770
+and select "source file" and click on "add existing files",
+
+56
+00:03:53,770 --> 00:03:58,190
+then you'll be able to add hello_window.cpp into the project.
+
+57
+00:03:58,190 --> 00:04:05,020
+By right mouse button clicking on your project name in the Solution
+
+58
+00:04:05,020 --> 00:04:08,530
+Select "Property" at the bottom of the pop-up menu.
+
+59
+00:04:08,530 --> 00:04:12,720
+Select C/C+ > general > additional directory
+
+60
+00:04:12,720 --> 00:04:16,360
+and then you can add four include directories.
+
+61
+00:04:16,360 --> 00:04:18,840
+Here $(SolutionDir) represents
+
+62
+00:04:18,840 --> 00:04:22,420
+the folder of the current project,
+
+63
+00:04:22,420 --> 00:04:26,960
+which is common for all of other projects to represent each of the project folders.
+
+64
+00:04:26,960 --> 00:04:29,860
+On a property > linker > general > additional library directory,
+
+65
+00:04:29,860 --> 00:04:31,770
+Add two directories.
+
+66
+00:04:31,770 --> 00:04:36,460
+And add the follwing three libraries at linker > input > additional dependencies,
+
+67
+00:04:36,460 --> 00:04:43,520
+opengl32.lib, glew32.lib, glfw3.lib
+
+68
+00:04:43,520 --> 00:04:50,120
+Copy the glew32.dll in External Libs > GLEW > bin > Release > Win32
+
+69
+00:04:50,120 --> 00:04:55,930
+into the source folder of project.
+
+70
+00:04:55,930 --> 00:04:59,870
+Finally, pressing "Control F5" allows you to build the application and run it.

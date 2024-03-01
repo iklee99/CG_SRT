@@ -1,0 +1,387 @@
+﻿1
+00:00:00,000 --> 00:00:02,550
+In this notebook I'm going to walk you through the process of building
+
+2
+00:00:02,550 --> 00:00:07,040
+and launching an OpenGL program using Xcode on the Mac.
+
+3
+00:00:07,040 --> 00:00:09,770
+Xcode is the IDE or Integrated Development Environment
+
+4
+00:00:09,770 --> 00:00:13,500
+provided by MacOS.
+
+5
+00:00:13,500 --> 00:00:16,380
+This is a setup course that was done as a test on Xcode version
+
+6
+00:00:16,380 --> 00:00:20,380
+15.2 in early February 2024.
+
+7
+00:00:20,380 --> 00:00:24,300
+If it's Xcode and not this version, then we do need to update it.
+
+8
+00:00:24,300 --> 00:00:26,400
+We do need to have all these external libraries,
+
+9
+00:00:26,400 --> 00:00:30,560
+and the easiest way to get them to install is with Homebrew.
+
+10
+00:00:30,560 --> 00:00:36,540
+Homebrew is downloadable from http://brew.sh/installable. So I can do a Homebrew install,
+
+11
+00:00:36,540 --> 00:00:39,080
+and then I can do a BREW command,
+
+12
+00:00:39,080 --> 00:00:43,280
+so I can install GLFW, GLEW, GLM.
+
+13
+00:00:43,280 --> 00:00:45,510
+After I've done all the installs,
+
+14
+00:00:45,510 --> 00:00:48,240
+if I go into the terminal app and I go into the CD command, /usr/local/Cellar folder,
+
+15
+00:00:48,240 --> 00:00:52,520
+you'll see that I've got GLEW, GLFW, GLM in the install.
+
+16
+00:00:52,520 --> 00:00:56,040
+If you go to /usr/local/include, you'll see that the GL, the GLFW
+
+17
+00:00:56,040 --> 00:01:01,690
+and the GLM folders are all linked to the appropriate folders that have been installed previously.
+
+18
+00:01:01,690 --> 00:01:05,440
+So glew.h is under /usr/local/include/GL.
+
+19
+00:01:05,440 --> 00:01:09,220
+So we prepare a working folder for projects.
+
+20
+00:01:09,220 --> 00:01:12,510
+So in this example, I've created a folder called MAC.
+
+21
+00:01:12,510 --> 00:01:15,700
+So I'm going to open the source.zip that I downloaded from Runus,
+
+22
+00:01:15,700 --> 00:01:18,140
+and I'm going to do a working folder or laro copy of the utils folder.
+
+23
+00:01:18,140 --> 00:01:23,450
+So what we're going to do is we're going to create a project for Xcode to use OpenGL.
+
+24
+00:01:23,450 --> 00:01:27,060
+So I'm going to do Project template MOS > "Command Line Tool"
+
+25
+00:01:27,060 --> 00:01:28,910
+and I'm going to click next.
+
+26
+00:01:28,910 --> 00:01:33,090
+I'm going to type in the name of Project, and language is going to do C++.
+
+27
+00:01:33,090 --> 00:01:37,790
+And for this, I'm going to do a project name of 00
+
+28
+00:01:37,790 --> 00:01:39,900
+underscore, Working folder (ex.
+
+29
+00:01:39,900 --> 00:01:42,590
+MAC) and I'm going to click the create button.
+
+30
+00:01:42,590 --> 00:01:47,450
+Under the Working Folder there's a project folder called 00_HellowWindow.
+
+31
+00:01:47,450 --> 00:01:49,250
+I'm going to hit the "Frameworks and Libraries" button under the general tab,
+
+32
+00:01:49,250 --> 00:01:51,900
+and I'm going to search opengl, select the opengl framework, add it.
+
+33
+00:01:51,900 --> 00:01:57,850
+"Frameworks and Libraries" below,
+
+34
+00:01:57,850 --> 00:02:00,390
++ button, "Add Other", "Add Files" select.
+
+35
+00:02:00,390 --> 00:02:03,970
+Command – Shift – G and pull up the "go to the folder" dialogue.
+
+36
+00:02:03,970 --> 00:02:08,590
+So we're going to type in the folder that we want to go to,
+
+37
+00:02:08,590 --> 00:02:12,280
+which is /usr/local/Cellar, and we're going to hit enter.
+
+38
+00:02:12,280 --> 00:02:15,590
+under /usr/local/Cellar, you go to the glew folder,
+
+39
+00:02:15,590 --> 00:02:18,330
+you go to the lib folder under the install glew packages,
+
+40
+00:02:18,330 --> 00:02:24,320
+and you select a dylib file.
+
+41
+00:02:24,320 --> 00:02:30,860
+The first thing to note is that we're going to need to select an actual dylib file, not just the virtual file ( link)
+
+42
+00:02:30,860 --> 00:02:35,720
+We'll know whether it's a virtual file or an actual file when we look at the file icon.
+
+43
+00:02:35,720 --> 00:02:40,160
+Similarly we're going to add a dylib file for GLFW.
+
+44
+00:02:40,160 --> 00:02:43,810
+So we've got three libraries of openGL framework,
+
+45
+00:02:43,810 --> 00:02:47,330
+libGLEW and libglfw in this programming course.
+
+46
+00:02:47,330 --> 00:02:48,370
+So we're going to add in the header search paths /usr/local/include
+
+47
+00:02:48,370 --> 00:02:53,960
+and we're going to add in .utils.
+
+48
+00:02:53,960 --> 00:03:00,070
+When we create a project, we don't need the default main.cpp, so we delete that.
+
+49
+00:03:00,070 --> 00:03:04,570
+I'm going to copy the 00_HellowWindow project
+
+50
+00:03:04,570 --> 00:03:06,270
+hello_window.cpp from the distributed source to the 00_HelloWindow/00_HelloWindow folder,
+
+51
+00:03:06,270 --> 00:03:12,280
+click right on the 00_HelloWindow project and select from the pop-up menu
+
+52
+00:03:12,280 --> 00:03:15,840
+"Add Files to 00_HelloWindow."
+
+53
+00:03:15,840 --> 00:03:18,920
+And I'm going to add a copy of hello_window.cpp to my project
+
+54
+00:03:18,920 --> 00:03:22,560
+by clicking the add button.
+
+55
+00:03:22,560 --> 00:03:26,910
+I'm going to select hello_window.cpp on the navigation area on the left
+
+56
+00:03:26,910 --> 00:03:29,450
+and I'm going to see the source code.
+
+57
+00:03:29,450 --> 00:03:32,780
+I'm going to hit the play button and I'm going to run the program.
+
+58
+00:03:32,780 --> 00:03:35,300
+So I'm going to run it and it's going to pop up a window
+
+59
+00:03:35,300 --> 00:03:39,330
+and it's going to pop up a grey-green background.
+
+60
+00:03:39,330 --> 00:03:41,780
+So I'm going to press ESC key on the keyboard
+
+61
+00:03:41,780 --> 00:03:44,230
+or I'm going to click the end red button
+
+62
+00:03:44,230 --> 00:03:45,850
+and that's going to end the program.
+
+63
+00:03:45,850 --> 00:03:50,390
+The Derived Data folder is the folder for storing the build up run files.
+
+64
+00:03:50,390 --> 00:03:52,590
+It's also the folder that we need to be aware of
+
+65
+00:03:52,590 --> 00:03:54,910
+to be able to store our shader files, our texture files, et cetera,
+
+66
+00:03:54,910 --> 00:03:56,980
+to be able to run our applications.
+
+67
+00:03:56,980 --> 00:04:00,230
+And to find out where the current Derived Data folder is,
+
+68
+00:04:00,230 --> 00:04:03,260
+I'm going to go to Xcode > Settings menu.
+
+69
+00:04:03,260 --> 00:04:05,120
+If I go to the "Locations" tab,
+
+70
+00:04:05,120 --> 00:04:09,540
+it's going to take me to the current default "Derived Data" folder.
+
+71
+00:04:09,540 --> 00:04:16,330
+you're usually going to see a default
+
+72
+00:04:16,330 --> 00:04:18,070
+location for "s/user/user name/library/Developer/Xcode/Derivedata."
+
+73
+00:04:18,070 --> 00:04:21,590
+Username is your current user ID.
+
+74
+00:04:21,590 --> 00:04:25,280
+I'm going to turn the Derived Data folder
+
+75
+00:04:25,280 --> 00:04:27,190
+into a more accessible folder,
+
+76
+00:04:27,190 --> 00:04:30,720
+select the "Custom" option, and then specify the folder that I've chosen.
+
+77
+00:04:30,720 --> 00:04:34,850
+So under MAC, project directory, I'm going to create a folder called Derived Data,
+
+78
+00:04:34,850 --> 00:04:37,240
+and I'm going to specify that.
+
+79
+00:04:37,240 --> 00:04:40,900
+So I'm going to do build,
+
+80
+00:04:40,900 --> 00:04:44,050
+and you're going to see that
+
+81
+00:04:44,050 --> 00:04:48,860
+the executable, 00_HelloWindow, has come up under MAC/DerivedData/00_HelloWindow... /Build/Products/Debug.
+
+82
+00:04:48,860 --> 00:04:51,950
+So we can put any of the shader files or texture files
+
+83
+00:04:51,950 --> 00:04:56,130
+that we want into a directory such as the executable files.
+
+84
+00:04:56,130 --> 00:04:59,520
+21_Texture1 is our source that contains all of our texture files,
+
+85
+00:04:59,520 --> 00:05:02,960
+our mage files, our fragment
+
+86
+00:05:02,960 --> 00:05:06,920
+shader files, all of our fragment shader files.
+
+87
+00:05:06,920 --> 00:05:12,570
+So you can create a project in Xcode and run it in order to get it running.
+
+88
+00:05:12,570 --> 00:05:14,290
+The texture file, container.bmp, and the two shader files,
+
+89
+00:05:14,290 --> 00:05:18,210
+global.fs and global.vs, under the Derivedata folder
+
+90
+00:05:18,210 --> 00:05:20,810
+that you've chosen, 21_Texture1..../Builder/Products/Debug,
+
+91
+00:05:20,810 --> 00:05:26,610
+you need to copy that.
+
+92
+00:05:26,610 --> 00:05:30,580
+But that folder doesn't exist without the first play,
+
+93
+00:05:30,580 --> 00:05:35,100
+the build, so we're going to copy the build before we copy the first three files.
+
+94
+00:05:35,100 --> 00:05:39,940
+So these need to exist under the derived data directory.
+
+95
+00:05:39,940 --> 00:05:43,350
+So just to make it easier for Xcode to edit the shader files,
+
+96
+00:05:43,350 --> 00:05:48,790
+just like we added the CPP files,
+
+97
+00:05:48,790 --> 00:05:52,170
+you can add the FS files from the Derived Data folder into the 21_Texture1 folder.

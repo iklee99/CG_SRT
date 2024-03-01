@@ -1,0 +1,887 @@
+﻿1
+00:00:05,000 --> 00:00:09,000
+Computer graphics is the science of creating,
+
+2
+00:00:09,000 --> 00:00:14,000
+manipulating and using visual objects in a computer, CG for short.
+
+3
+00:00:14,000 --> 00:00:19,000
+You might think of CG as the art of creating drawings using software
+
+4
+00:00:19,000 --> 00:00:24,000
+like Blender or 3DMax or Photoshop.
+
+5
+00:00:24,000 --> 00:00:27,000
+But in computer science, computer graphics
+
+6
+00:00:27,000 --> 00:00:32,000
+is the art of developing software to create a graphical object.
+
+7
+00:00:32,000 --> 00:00:37,000
+There are three main categories of details in computer graphics.
+
+8
+00:00:37,000 --> 00:00:43,000
+"Modeling" is the field of how to express geometric objects inside a computer,
+
+9
+00:00:43,000 --> 00:00:47,000
+and it has to do with mathematical expressions and data structure.
+
+10
+00:00:47,000 --> 00:00:52,000
+"Rendering" is about how the modeled objects are drawn on the screen,
+
+11
+00:00:52,000 --> 00:00:57,000
+Photorealistic rendering is attempting to replicate the real world,
+
+12
+00:00:57,000 --> 00:01:02,000
+non-photorealistic rendering,
+
+13
+00:01:02,000 --> 00:01:04,000
+which mimics other artistic practices.
+
+14
+00:01:04,000 --> 00:01:09,000
+Animations are possible by changing the time
+
+15
+00:01:09,000 --> 00:01:13,000
+so that each frame, each scene, can be rendered sequentially.
+
+16
+00:01:13,000 --> 00:01:17,000
+The area where we study how to calculate the changes in trajectory
+
+17
+00:01:17,000 --> 00:01:22,000
+or shape of an object over time is called "animation."
+
+18
+00:01:22,000 --> 00:01:26,000
+A related field to CG is "image/video processing",
+
+19
+00:01:26,000 --> 00:01:29,000
+which involves manipulating images or videos.
+
+20
+00:01:29,000 --> 00:01:32,000
+In particular, the processing of photos or videos
+
+21
+00:01:32,000 --> 00:01:35,000
+taken by cameras for special purposes is
+
+22
+00:01:35,000 --> 00:01:38,000
+called "computational photography".
+
+23
+00:01:38,000 --> 00:01:42,000
+"Human-computer interaction",
+
+24
+00:01:42,000 --> 00:01:45,000
+often shortened to "HCI",
+
+25
+00:01:45,000 --> 00:01:48,000
+is the study of the devices and interaction methods
+
+26
+00:01:48,000 --> 00:01:52,000
+involved in human use of computing devices.
+
+27
+00:01:52,000 --> 00:01:56,000
+"Visualization" is often divided into two fields:
+
+28
+00:01:56,000 --> 00:02:00,000
+scientific visualization and
+
+29
+00:02:00,000 --> 00:02:06,000
+information visualization,
+
+30
+00:02:06,000 --> 00:02:10,000
+which were considered early applications of CG.
+
+31
+00:02:10,000 --> 00:02:18,000
+"Extended reality," which includes "virtual reality"
+
+32
+00:02:18,000 --> 00:02:23,000
+and "augmented reality,"
+
+33
+00:02:23,000 --> 00:02:28,000
+is one of the most exciting applications of CG in recent years.
+
+34
+00:02:28,000 --> 00:02:32,000
+"3D printing" is the process of taking a computer modeled object
+
+35
+00:02:32,000 --> 00:02:37,000
+and producing it with real-world materials,
+
+36
+00:02:37,000 --> 00:02:42,000
+and that's one of the fastest advances in technology in recent years.
+
+37
+00:02:42,000 --> 00:02:47,000
+The most famous application of CG is filmmaking.
+
+38
+00:02:47,000 --> 00:02:53,000
+These days, it's very common to make a movie with a combination of live-action
+
+39
+00:02:53,000 --> 00:02:57,000
+photography and CG, which allows you to make scenes that don't exist
+
+40
+00:02:57,000 --> 00:03:00,000
+in reality for relatively little money.
+
+41
+00:03:00,000 --> 00:03:04,000
+But in order to create sophisticated graphics results
+
+42
+00:03:04,000 --> 00:03:08,000
+that are indistinguishable from reality,
+
+43
+00:03:08,000 --> 00:03:12,000
+it may require computing that takes minutes, hours, or even days per frame.
+
+44
+00:03:12,000 --> 00:03:15,000
+Another application is games.
+
+45
+00:03:15,000 --> 00:03:20,000
+Rendering your scenes in real time is essential, especially in a game.
+
+46
+00:03:20,000 --> 00:03:25,000
+Real-time graphics generally requires a rendering speed of at least 30 frames per second,
+
+47
+00:03:25,000 --> 00:03:28,000
+so it's important to balance the quality of your rendering
+
+48
+00:03:28,000 --> 00:03:34,000
+with the speed of your render calculations.
+
+49
+00:03:34,000 --> 00:03:38,000
+These days, with game engines like Unity and Unreal,
+
+50
+00:03:38,000 --> 00:03:40,000
+it's a lot easier to build games,
+
+51
+00:03:40,000 --> 00:03:46,000
+and one of the most important techniques that we use in game engines is CG.
+
+52
+00:03:46,000 --> 00:03:52,000
+Computer graphics technology has been used in a wide
+
+53
+00:03:52,000 --> 00:03:54,000
+variety of fields beyond entertainment
+
+54
+00:03:54,000 --> 00:03:57,000
+including the design of construction and machinery, visualization,
+
+55
+00:03:57,000 --> 00:04:00,000
+training and education (ex. flight simulators),
+
+56
+00:04:00,000 --> 00:04:03,000
+and media arts.
+
+57
+00:04:03,000 --> 00:04:07,000
+In order for us to draw on our computer screens,
+
+58
+00:04:07,000 --> 00:04:12,000
+we need to take input from our input devices first.
+
+59
+00:04:12,000 --> 00:04:18,000
+We can input that from a keyboard, from a tablet, from a mouse, et cetera.
+
+60
+00:04:18,000 --> 00:04:25,000
+The input is first stored in the CPU memory and then processed in a variety of ways.
+
+61
+00:04:25,000 --> 00:04:30,000
+This data then moves to the GPU memory
+
+62
+00:04:30,000 --> 00:04:33,000
+inside the GPU (Graphics Processing Unit).
+
+63
+00:04:33,000 --> 00:04:38,000
+In particular, the memory that's storing the pixel values that are
+
+64
+00:04:38,000 --> 00:04:40,000
+currently being drawn on the screen is called a frame buffer.
+
+65
+00:04:40,000 --> 00:04:45,000
+And the frame buffer is going to continue to be drawn on the screen at a very high rate of speed.
+
+66
+00:04:45,000 --> 00:04:49,000
+So we're going to keep changing the content in this frame buffer
+
+67
+00:04:49,000 --> 00:04:54,000
+so that we can see moving picture (animation)
+
+68
+00:04:54,000 --> 00:04:57,000
+Raster is a set of pixels.
+
+69
+00:04:57,000 --> 00:05:00,000
+Pixel is short for picture element.
+
+70
+00:05:00,000 --> 00:05:06,000
+One pixel has a color that represents a location that's going to take a coordinate on the screen.
+
+71
+00:05:06,000 --> 00:05:11,000
+The frame buffer that's storing the raster that's currently displayed
+
+72
+00:05:11,000 --> 00:05:14,000
+is actually a set of different buffers.
+
+73
+00:05:14,000 --> 00:05:19,000
+A frame buffer consists of a color buffer
+
+74
+00:05:19,000 --> 00:05:22,000
+that stores the color values of pixel,
+
+75
+00:05:22,000 --> 00:05:25,000
+a depth buffer that stores the depth values, and so on.
+
+76
+00:05:25,000 --> 00:05:29,000
+Scan conversion, also known as rasterization, is the process of converting polygons
+
+77
+00:05:29,000 --> 00:05:34,000
+like triangles into pixel data.
+
+78
+00:05:34,000 --> 00:05:38,000
+In order to draw a triangle on the screen like you drew it,
+
+79
+00:05:38,000 --> 00:05:43,000
+you have to decide which PIXELs to turn on and off.
+
+80
+00:05:43,000 --> 00:05:48,000
+The Scan conversion is one of those things that the GPU does exclusively for CG.
+
+81
+00:05:48,000 --> 00:05:53,000
+GPUs have graphical memory, like frame buffers,
+
+82
+00:05:53,000 --> 00:05:57,000
+and they implement some special algorithms in H/W
+
+83
+00:05:57,000 --> 00:05:59,000
+to make it run faster.
+
+84
+00:05:59,000 --> 00:06:05,000
+The GPU was originally developed for computer graphics,
+
+85
+00:06:05,000 --> 00:06:08,000
+but more recently, it's been widely used for calculated machine learning, electronic currency mining, and so on.
+
+86
+00:06:08,000 --> 00:06:13,000
+Before the flat-pannel display, which we'll talk about later,
+
+87
+00:06:13,000 --> 00:06:20,000
+the most common output that was used was CRT (Cathode-Ray-Tube).
+
+88
+00:06:20,000 --> 00:06:23,000
+The CRT was a raster display
+
+89
+00:06:23,000 --> 00:06:28,000
+that displayed the entire contents of the frame buffer.
+
+90
+00:06:28,000 --> 00:06:32,000
+The path of electrons fired from the CRT's electromagnetic gun
+
+91
+00:06:32,000 --> 00:06:36,000
+is bent by magnetic force against the XY deflectors
+
+92
+00:06:36,000 --> 00:06:39,000
+to reach the desired coordinates on the screen.
+
+93
+00:06:39,000 --> 00:06:45,000
+On the CRT screen, there are colored florescent materials called phosphors
+
+94
+00:06:45,000 --> 00:06:48,000
+that glow when electrons hit them.
+
+95
+00:06:48,000 --> 00:06:53,000
+The speed at which a CRT is drawn is called a refresh rate.
+
+96
+00:06:53,000 --> 00:06:58,000
+In the U.S., it's usually re-drawing at 60 times a second,
+
+97
+00:06:58,000 --> 00:07:01,000
+or 60 Herz, as we call it.
+
+98
+00:07:01,000 --> 00:07:06,000
+In Europe, 50 hertz is the number that's commonly used.
+
+99
+00:07:06,000 --> 00:07:09,000
+When you do a refresh, once you draw an odd number of rows,
+
+100
+00:07:09,000 --> 00:07:14,000
+the next time you draw an even number of rows, it's called interacing.
+
+101
+00:07:14,000 --> 00:07:19,000
+If you use interacing,
+
+102
+00:07:19,000 --> 00:07:23,000
+the 60 hertz refresh is actually a 30 hertz refresh.
+
+103
+00:07:23,000 --> 00:07:26,000
+The most popular display these days
+
+104
+00:07:26,000 --> 00:07:31,000
+is Flat-panel display.
+
+105
+00:07:31,000 --> 00:07:34,000
+They contain light emitting elements between two 2D grids,
+
+106
+00:07:34,000 --> 00:07:39,000
+one vertical and one horizontal,
+
+107
+00:07:39,000 --> 00:07:44,000
+and use the two grids to specify where light is visible.
+
+108
+00:07:44,000 --> 00:07:48,000
+Depending on the technology that makes the light emitting elements,
+
+109
+00:07:48,000 --> 00:07:52,000
+flat-panel displays are categorized as LCD, LED, OLED, etc.
+
+110
+00:07:52,000 --> 00:07:57,000
+There's a lot of different types of input devices for computer graphics.
+
+111
+00:07:57,000 --> 00:08:02,000
+The mouse is something we use a lot, and we use it a lot in graphics.
+
+112
+00:08:02,000 --> 00:08:08,000
+You have a trackball that has a free 360-degree rotation
+
+113
+00:08:08,000 --> 00:08:13,000
+It's often used to roll a ball with your palm and type in rotation or something like that.
+
+114
+00:08:13,000 --> 00:08:18,000
+The tablet is often used to draw more intricately with a pen.
+
+115
+00:08:18,000 --> 00:08:23,000
+We're seeing a lot of high-end tablets that are drawn directly on the screen with touch pens.
+
+116
+00:08:23,000 --> 00:08:27,000
+Joysticks are very common for things like game play.
+
+117
+00:08:27,000 --> 00:08:32,000
+Spaceball is kind of like a trackball, but you're not actually rolling the ball,
+
+118
+00:08:32,000 --> 00:08:37,000
+you're holding the fixed ball and touching it.
+
+119
+00:08:37,000 --> 00:08:42,000
+OpenGL's home page is opengl.org.
+
+120
+00:08:42,000 --> 00:08:47,000
+OpenGL provides a lot of functionality for graphics and for images.
+
+121
+00:08:47,000 --> 00:08:53,000
+OpenGL is not an API, it's not an Application Programming Interface,
+
+122
+00:08:53,000 --> 00:08:57,000
+But it's a specification of an API.
+
+123
+00:08:57,000 --> 00:09:02,000
+In other words, OpenGL is a standard that describes
+
+124
+00:09:02,000 --> 00:09:04,000
+what functions and variables exist.
+
+125
+00:09:04,000 --> 00:09:10,000
+This means that OpenGL can be implemented in
+
+126
+00:09:10,000 --> 00:09:14,000
+different programming languages including C++, Java, Python, and JavaScript.
+
+127
+00:09:14,000 --> 00:09:20,000
+GLFW is a library that comes with OpenGL that makes the window that you want to draw on
+
+128
+00:09:20,000 --> 00:09:25,000
+and then input and output from those devices.
+
+129
+00:09:25,000 --> 00:09:31,000
+GLEW is a library that looks for openGL functions
+
+130
+00:09:31,000 --> 00:09:36,000
+implemented by the manufacturer of graphic card to tie into our openGL applications.
+
+131
+00:09:36,000 --> 00:09:44,000
+We're going to be using a combination of GLFW and GLEW with OpenGL in this course.
+
+132
+00:09:44,000 --> 00:09:48,000
+So we're going to take a look at our first application.
+
+133
+00:09:48,000 --> 00:09:54,000
+00_HelloWindow is a simple program that displays a single window.
+
+134
+00:09:54,000 --> 00:10:00,000
+You can resize the window with the mouse just like any other window.
+
+135
+00:10:00,000 --> 00:10:03,000
+There are two ways to exit the program:
+
+136
+00:10:03,000 --> 00:10:07,000
+pressing the ESC key or pressing the Exit button.
+
+137
+00:10:07,000 --> 00:10:14,000
+So the first part of the program is to include two header files,
+
+138
+00:10:14,000 --> 00:10:18,000
+glew.h and glfw3.h. Below that is
+
+139
+00:10:18,000 --> 00:10:24,000
+the prototype of the two functions that are going to be defined later.
+
+140
+00:10:24,000 --> 00:10:26,000
+So the framebuffer_size_callback is a callback function that calls
+
+141
+00:10:26,000 --> 00:10:30,000
+when the window is resized.
+
+142
+00:10:30,000 --> 00:10:33,000
+processInput is a function that will check whether input has come in
+
+143
+00:10:33,000 --> 00:10:37,000
+during the execution of rendering loop.
+
+144
+00:10:37,000 --> 00:10:40,000
+The SCR_WIDTH and the SCR_HEIGHT are the global variable that represents the size of the Windows
+
+145
+00:10:40,000 --> 00:10:45,000
+that's going to be created.
+
+146
+00:10:45,000 --> 00:10:50,000
+We're going to create a window of size 800 x 600.
+
+147
+00:10:50,000 --> 00:10:55,000
+So at the beginning of the main function,
+
+148
+00:10:55,000 --> 00:10:58,000
+we initialize GLFW, and set an OpenGL version to 3.3.
+
+149
+00:10:58,000 --> 00:11:01,000
+And this is where it's going to create the window.
+
+150
+00:11:01,000 --> 00:11:06,000
+And we're setting the current context to the window that we just created.
+
+151
+00:11:06,000 --> 00:11:12,000
+So all of the next commands are going to work against this window.
+
+152
+00:11:12,000 --> 00:11:17,000
+And you'll see that
+
+153
+00:11:17,000 --> 00:11:20,000
+framebuffer_size_callback is registered as the FramebufferSizeCallback function.
+
+154
+00:11:20,000 --> 00:11:26,000
+And then the rest of this is showing the initialize of the glew.
+
+155
+00:11:26,000 --> 00:11:30,000
+This is the part of the main loop that actually draws on Windows
+
+156
+00:11:30,000 --> 00:11:35,000
+and processes it by input.
+
+157
+00:11:35,000 --> 00:11:40,000
+A lot of times that type of application will loop until the end event comes in, and within that loop,
+
+158
+00:11:40,000 --> 00:11:42,000
+it's going to check the input, the event,
+
+159
+00:11:42,000 --> 00:11:48,000
+and then it's going to draw whatever the update is.
+
+160
+00:11:48,000 --> 00:11:52,000
+A lot of times you'll see these loops in game programs.
+
+161
+00:11:52,000 --> 00:11:57,000
+We call them event loops or main loops.
+
+162
+00:11:57,000 --> 00:12:02,000
+So in our case we're going to check that
+
+163
+00:12:02,000 --> 00:12:05,000
+the quit event has come in through the glfwWindowShouldClose function,
+
+164
+00:12:05,000 --> 00:12:11,000
+and it's going to exit the loop if the end button or ESC key occurs.
+
+165
+00:12:11,000 --> 00:12:16,000
+And inside the loop the first thing it does is it takes a look at what input came in.
+
+166
+00:12:16,000 --> 00:12:21,000
+Typically, it's going to handle a mouse input or keyboard input or something like that.
+
+167
+00:12:21,000 --> 00:12:26,000
+And what glClearColor does is
+
+168
+00:12:26,000 --> 00:12:29,000
+it specifies the Windows background color.
+
+169
+00:12:29,000 --> 00:12:36,000
+They're in RGBA format, for example,  (0.2 or .3 or .3 or 1.0)
+
+170
+00:12:36,000 --> 00:12:41,000
+Here, Alpha 1.0  represents an completely opaque color.
+
+171
+00:12:41,000 --> 00:12:45,000
+glClear() is the function is to clear a specific buffer,
+
+172
+00:12:45,000 --> 00:12:50,000
+GL_COLOR_BUFFER_BIT is the buffer where everything that we're drawing
+
+173
+00:12:50,000 --> 00:12:54,000
+So we're saying color buffer within the frame buffer,
+
+174
+00:12:54,000 --> 00:12:59,000
+and with glClear() command, it's going to clear the window in the designated background color.
+
+175
+00:12:59,000 --> 00:13:04,000
+Our 00_HelloWindow program only shows the background,
+
+176
+00:13:04,000 --> 00:13:07,000
+so after you clear, you don't have to draw anything else.
+
+177
+00:13:07,000 --> 00:13:11,000
+When you're done drawing,
+
+178
+00:13:11,000 --> 00:13:15,000
+you give the command to the glfwSapBuffers to swap the buffer.
+
+179
+00:13:15,000 --> 00:13:20,000
+So it's the exchange between the front and the back buffer,
+
+180
+00:13:20,000 --> 00:13:24,000
+which we'll talk about in a little bit more detail in the later slides.
+
+181
+00:13:24,000 --> 00:13:29,000
+glfwPollEvents() is called at the end of the loop body
+
+182
+00:13:29,000 --> 00:13:33,000
+that monitors for the next input that's going to be processed.
+
+183
+00:13:33,000 --> 00:13:37,000
+So the termination event comes in, takes you out of your main loop,
+
+184
+00:13:37,000 --> 00:13:40,000
+and that's when you wrap up and you're done with your program.
+
+185
+00:13:40,000 --> 00:13:45,000
+glfwTerminate()  kills the drawing window.
+
+186
+00:13:45,000 --> 00:13:50,000
+we have two more functions except the main function.
+
+187
+00:13:50,000 --> 00:13:52,000
+So first of all, the processInput function is
+
+188
+00:13:52,000 --> 00:13:56,000
+checking what input event happened.
+
+189
+00:13:56,000 --> 00:14:00,000
+So in this example, We're going to check if the ESC key has come in,
+
+190
+00:14:00,000 --> 00:14:04,000
+and then the program is going to set WindowsShouldClose
+
+191
+00:14:04,000 --> 00:14:07,000
+to true to get it out of the main loop.
+
+192
+00:14:07,000 --> 00:14:11,000
+So the second one, the function is framebuffer_size_callback,
+
+193
+00:14:11,000 --> 00:14:17,000
+and you'll remember that this function was registered as a callback function.
+
+194
+00:14:17,000 --> 00:14:22,000
+This callback function is going to run as soon as the window size changes.
+
+195
+00:14:22,000 --> 00:14:27,000
+The width and height that comes in to the parameter are the sizes that were changed
+
+196
+00:14:27,000 --> 00:14:31,000
+the changed sizes are from GLFW.
+
+197
+00:14:31,000 --> 00:14:36,000
+So we're going to change the viewport size
+
+198
+00:14:36,000 --> 00:14:39,000
+to fit the new window size using the GLViewport function.
+
+199
+00:14:39,000 --> 00:14:43,000
+And then we're going to save the changed size of the window to
+
+200
+00:14:43,000 --> 00:14:49,000
+SCR_WIDTH and SCR_HEIGHT as global variables.
+
+201
+00:14:49,000 --> 00:14:53,000
+Generally, computers have two display buffers,
+
+202
+00:14:53,000 --> 00:14:56,000
+a front and a back buffer.
+
+203
+00:14:56,000 --> 00:15:01,000
+The display screen is always showing what's contained in the front buffer.
+
+204
+00:15:01,000 --> 00:15:06,000
+Meanwhile, the application is drawing something to the back buffer, not to the front.
+
+205
+00:15:06,000 --> 00:15:11,000
+So with one frame of animation displayed on the screen,
+
+206
+00:15:11,000 --> 00:15:15,000
+the application is going to draw the next frame of the back buffer.
+
+207
+00:15:15,000 --> 00:15:18,000
+and then we're going to replace the front with the back buffer.
+
+208
+00:15:18,000 --> 00:15:22,000
+In other words, we're going to replace the pointer of the front buffer
+
+209
+00:15:22,000 --> 00:15:25,000
+with a pointer that's pointing to a back buffer.
+
+210
+00:15:25,000 --> 00:15:30,000
+That can be helpful to prevent the flickering
+
+211
+00:15:30,000 --> 00:15:33,000
+that you get when you're drawing a new frame.
+
+212
+00:15:33,000 --> 00:15:38,000
+If we only use one single buffer, we'll get a blink.
+
+213
+00:15:38,000 --> 00:15:43,000
+You can see in the video the blink with the single buffering.
+
+214
+00:15:43,000 --> 00:15:47,000
+Viewport is the (part of ) area that's actually being drawn on the window.
+
+215
+00:15:47,000 --> 00:15:50,000
+Inside that already defined drawing window,
+
+216
+00:15:50,000 --> 00:15:54,000
+you define a left- to lower corner of the area
+
+217
+00:15:54,000 --> 00:15:57,000
+that you're actually going to draw, the width of that area, the height of that area.
+
+218
+00:15:57,000 --> 00:16:03,000
+If you call glViewPort(0, 0, width, height)
+
+219
+00:16:03,000 --> 00:16:06,000
+that's going to make the viewport to be the entire window.
+
+220
+00:16:06,000 --> 00:16:09,000
+That's also the default viewport.
+
+221
+00:16:09,000 --> 00:16:15,000
+Like the second example, we can only draw in the first quadrant of the window.
+
+222
+00:16:15,000 --> 00:16:20,000
+That way, we can actually draw multiple views on the same window at the same time.
