@@ -1,0 +1,523 @@
+﻿1
+00:00:00,000 --> 00:00:03,720
+Let's start with the Indexed Triangle lesson.
+
+2
+00:00:03,720 --> 00:00:06,680
+In this program, we're going to draw
+
+3
+00:00:06,680 --> 00:00:09,530
+a single rectangle using two triangles,
+
+4
+00:00:09,530 --> 00:00:13,100
+and unlike the previous example, we're using INDEX
+
+5
+00:00:13,100 --> 00:00:16,500
+to specify the vertex data.
+
+6
+00:00:16,500 --> 00:00:19,520
+By pressing the 'r' key, we can toggle between
+
+7
+00:00:19,520 --> 00:00:23,120
+painting the inside of the triangle
+
+8
+00:00:23,120 --> 00:00:26,350
+or showing only the edges.
+
+9
+00:00:26,350 --> 00:00:31,810
+Consider the case of drawing a rectangle with two triangles.
+
+10
+00:00:31,810 --> 00:00:35,820
+Since each triangle requires three vertices,
+
+11
+00:00:35,820 --> 00:00:40,290
+do we need data for all six vertices?
+
+12
+00:00:40,290 --> 00:00:45,590
+When we place these six vertex coordinates in the vertices array,
+
+13
+00:00:45,590 --> 00:00:48,580
+we see that the bottom right and top left
+
+14
+00:00:48,580 --> 00:00:52,670
+are common to both triangles.
+
+15
+00:00:52,670 --> 00:00:57,630
+So we actually only need four vertices.
+
+16
+00:00:57,630 --> 00:01:02,260
+In this case, there is a way to use indexes.
+
+17
+00:01:02,260 --> 00:01:06,940
+This means that we don't put duplicate data in the vertex data,
+
+18
+00:01:06,940 --> 00:01:13,120
+but store the connection (topology) information
+
+19
+00:01:13,120 --> 00:01:17,280
+for primitives like triangles separately in an index array.
+
+20
+00:01:17,280 --> 00:01:22,430
+In this example, we only use the four vertex coordinates
+
+21
+00:01:22,430 --> 00:01:25,070
+and use the vertex indices
+
+22
+00:01:25,070 --> 00:01:28,590
+to define the two triangles.
+
+23
+00:01:28,590 --> 00:01:33,850
+While the advantages of using indexes are not apparent
+
+24
+00:01:33,850 --> 00:01:37,910
+in this example, the reduction in data volume can be significant
+
+25
+00:01:37,910 --> 00:01:42,120
+when creating complex models with tens of thousands of triangles.
+
+26
+00:01:42,120 --> 00:01:46,560
+Index is called Element in OpenGL.
+
+27
+00:01:46,560 --> 00:01:51,420
+Like VBOs, indexes can be buffered.
+
+28
+00:01:51,420 --> 00:01:57,500
+This is called an Element Buffer Object (EBO).
+
+29
+00:01:57,500 --> 00:02:02,940
+To create an EBO and get its id, use the glGenBuffers() function
+
+30
+00:02:02,940 --> 00:02:06,720
+just as we would for a VBO.
+
+31
+00:02:06,720 --> 00:02:10,370
+When binding the EBO and copying data to it,
+
+32
+00:02:10,370 --> 00:02:15,120
+use GL_ELEMENT_ARRAY_BUFFER as the target.
+
+33
+00:02:15,120 --> 00:02:21,040
+In the case of VBO, GL_ARRAY_BUFFER as a target.
+
+34
+00:02:21,040 --> 00:02:25,200
+The process of bind and copy is very similar to what VBO does.
+
+35
+00:02:25,200 --> 00:02:29,150
+The one thing to note is that even after you've created an EBO,
+
+36
+00:02:29,150 --> 00:02:32,700
+you better not to unbind it.
+
+37
+00:02:32,700 --> 00:02:41,760
+Another thing to note is that VAO can contain both VBOs and EBOs.
+
+38
+00:02:41,760 --> 00:02:45,970
+Let's take a look at the drawing operations inside the man loop.
+
+39
+00:02:45,970 --> 00:02:49,110
+The processInput() function is gone
+
+40
+00:02:49,110 --> 00:02:52,570
+that was there before glClear().
+
+41
+00:02:52,570 --> 00:03:00,700
+So how do we check if the ESC and r keys are pressed?
+
+42
+00:03:00,700 --> 00:03:06,780
+We moved that functionality to the keyboard callback function.
+
+43
+00:03:06,780 --> 00:03:10,660
+glPolygonMode() allows you to specify whether
+
+44
+00:03:10,660 --> 00:03:16,290
+painting the inside of the polygon
+
+45
+00:03:16,290 --> 00:03:18,460
+or just draw edges.
+
+46
+00:03:18,460 --> 00:03:24,010
+It's sort of a command that changes the drawing state.
+
+47
+00:03:24,010 --> 00:03:28,490
+fillTriangle is a global variable that will alternate between true/false
+
+48
+00:03:28,490 --> 00:03:33,500
+each time the "r" key is pressed in the keyboard callback.
+
+49
+00:03:33,500 --> 00:03:35,810
+If true, it will paint the inside,
+
+50
+00:03:35,810 --> 00:03:41,760
+and if false, it will draw with GL_LINE, or edges.
+
+51
+00:03:41,760 --> 00:03:44,670
+glDrawElements() is a function
+
+52
+00:03:44,670 --> 00:03:48,230
+that draws objects by index.
+
+53
+00:03:48,230 --> 00:03:51,360
+GL_TRIANGLES is the primitive target and
+
+54
+00:03:51,360 --> 00:03:54,880
+there are six indices, two triangles,
+
+55
+00:03:54,880 --> 00:04:00,860
+and the last parameter, 0, is the offset from the start.
+
+56
+00:04:00,860 --> 00:04:03,360
+To use the keyboard callback,
+
+57
+00:04:03,360 --> 00:04:09,440
+we register the callback function in advance
+
+58
+00:04:09,440 --> 00:04:10,980
+using the glfwSetKeyCallback() function.
+
+59
+00:04:10,980 --> 00:04:15,180
+In this example, we registered a function called
+
+60
+00:04:15,180 --> 00:04:18,000
+key_callback() as a callback function.
+
+61
+00:04:18,000 --> 00:04:20,700
+Among the parameters of the Keyboard callback function,
+
+62
+00:04:20,700 --> 00:04:23,370
+'key' indicates which key,
+
+63
+00:04:23,370 --> 00:04:29,060
+and 'action' indicates whether the key is pressed (GLFW_PRESS)
+
+64
+00:04:29,060 --> 00:04:36,420
+or released (GLFW_RELEASE).
+
+65
+00:04:36,420 --> 00:04:40,220
+Each action can have different event handling.
+
+66
+00:04:40,220 --> 00:04:45,690
+In this case, the window is closed when the ESC key is pressed,
+
+67
+00:04:45,690 --> 00:04:50,820
+and the value of a global variable called fillTriangle to toggle
+
+68
+00:04:50,820 --> 00:04:54,880
+between true and false when the 'r' key is pressed.
+
+69
+00:04:54,880 --> 00:04:58,130
+In the following sections, we will look at the programs
+
+70
+00:04:58,130 --> 00:05:02,100
+for three example programs that are variations of HelloTriangle.
+
+71
+00:05:02,100 --> 00:05:08,220
+First, in 04_HelloTriangleExample1,
+
+72
+00:05:08,220 --> 00:05:13,960
+we draw two triangles, using one VAO and one VBO.
+
+73
+00:05:13,960 --> 00:05:18,260
+This program is almost identical
+
+74
+00:05:18,260 --> 00:05:20,390
+to the original 02_HelloTriangle program.
+
+75
+00:05:20,390 --> 00:05:24,670
+The only difference is that the vertices data now contains
+
+76
+00:05:24,670 --> 00:05:28,320
+the position coordinates of six vertices instead of three.
+
+77
+00:05:28,320 --> 00:05:32,160
+The rest of the process for creating the VAO and VBO are
+
+78
+00:05:32,160 --> 00:05:35,560
+all the same as when drawing just one triangle.
+
+79
+00:05:35,560 --> 00:05:41,400
+And when we call glDrawArrays in the main loop,
+
+80
+00:05:41,400 --> 00:05:46,280
+we use 6 vertices as the target of GL_TRIANGLES,
+
+81
+00:05:46,280 --> 00:05:49,700
+so we set the last parameter to 6.
+
+82
+00:05:49,700 --> 00:05:54,020
+One vertex coordinate is shared by both triangles,
+
+83
+00:05:54,020 --> 00:05:58,690
+but we didn't use index in this example.
+
+84
+00:05:58,690 --> 00:06:03,890
+The second example uses two different VAOs and VBOs
+
+85
+00:06:03,890 --> 00:06:07,040
+to draw two triangles.
+
+86
+00:06:07,040 --> 00:06:11,480
+To give the two VBOs different data,
+
+87
+00:06:11,480 --> 00:06:17,730
+we prepared two arrays with three vertex data each.
+
+88
+00:06:17,730 --> 00:06:24,730
+Both VAOs and VBOs were generated using two arrays of id.
+
+89
+00:06:24,730 --> 00:06:30,680
+And bind, buffering, and passing were done separately.
+
+90
+00:06:30,680 --> 00:06:35,910
+Note that if we bind VAOs[0] first,
+
+91
+00:06:35,910 --> 00:06:42,620
+all subsequent VBOs will belong to VAOs[0],
+
+92
+00:06:42,620 --> 00:06:48,300
+and if we bind VAOs[1],
+
+93
+00:06:48,300 --> 00:06:52,960
+all subsequent VBOs will belong to VAOs[1].
+
+94
+00:06:52,960 --> 00:06:56,700
+When we used glVertexAttribPointer
+
+95
+00:06:56,700 --> 00:07:00,160
+to pass the buffer data into the shader,
+
+96
+00:07:00,160 --> 00:07:05,640
+we gave the stride a value of 12 for the top and 0 for the bottom,
+
+97
+00:07:05,640 --> 00:07:08,290
+which all mean the same thing.
+
+98
+00:07:08,290 --> 00:07:11,340
+This means that if the data is
+
+99
+00:07:11,340 --> 00:07:14,490
+tightly packed with no other space between them,
+
+100
+00:07:14,490 --> 00:07:19,510
+writing a 0 will mean the same thing as writing a 12.
+
+101
+00:07:19,510 --> 00:07:22,610
+Finally, when we draw the two triangles,
+
+102
+00:07:22,610 --> 00:07:26,140
+we bind different VAOs to them
+
+103
+00:07:26,140 --> 00:07:33,410
+and call the DrawArrays command to use different data.
+
+104
+00:07:33,410 --> 00:07:38,790
+The third example draws two triangles, orange and yellow.
+
+105
+00:07:38,790 --> 00:07:41,320
+To use different colors,
+
+106
+00:07:41,320 --> 00:07:47,050
+this example uses two different fragment shaders.
+
+107
+00:07:47,050 --> 00:07:50,320
+The fragmentShader1Source string
+
+108
+00:07:50,320 --> 00:07:54,670
+is the source of the fragment shader that uses the orange color.
+
+109
+00:07:54,670 --> 00:07:57,380
+fragmentShader2Source is
+
+110
+00:07:57,380 --> 00:08:02,160
+the source of the fragment shader that uses the yellow color.
+
+111
+00:08:02,160 --> 00:08:05,840
+Since one shader program is
+
+112
+00:08:05,840 --> 00:08:08,240
+a pair of vertex shader and fragment shader,
+
+113
+00:08:08,240 --> 00:08:11,310
+we need two shader programs
+
+114
+00:08:11,310 --> 00:08:15,110
+to use different fragment shaders.
+
+115
+00:08:15,110 --> 00:08:16,390
+Unlike before,
+
+116
+00:08:16,390 --> 00:08:22,090
+we create another shader object
+
+117
+00:08:22,090 --> 00:08:25,170
+for the yellow fragment shader.
+
+118
+00:08:25,170 --> 00:08:30,830
+By combining the vertex shader and orange fragment shader,
+
+119
+00:08:30,830 --> 00:08:34,360
+the first shader program has been completed.
+
+120
+00:08:34,360 --> 00:08:36,880
+And the other shader program
+
+121
+00:08:36,880 --> 00:08:39,620
+uses the same vertex shader,
+
+122
+00:08:39,620 --> 00:08:43,270
+but different fragment shader.
+
+123
+00:08:43,270 --> 00:08:48,750
+VAO and VBO have created two of each just like we did in Example 2.
+
+124
+00:08:48,750 --> 00:08:52,170
+and used separately on the two triangles.
+
+125
+00:08:52,170 --> 00:08:56,620
+There's no change there.
+
+126
+00:08:56,620 --> 00:08:58,800
+When we're rendering on the main loop,
+
+127
+00:08:58,800 --> 00:09:01,420
+when we draw the first triangle,
+
+128
+00:09:01,420 --> 00:09:08,340
+we use the shaderProgramOrange, and then bind VAOs[0],
+
+129
+00:09:08,340 --> 00:09:10,220
+and then we draw it.
+
+130
+00:09:10,220 --> 00:09:14,860
+For the second triangle, we use shaderProgramYellow,
+
+131
+00:09:14,860 --> 00:09:18,890
+bind VAOs[1], and then draw it.
