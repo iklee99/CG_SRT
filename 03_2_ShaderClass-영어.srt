@@ -1,0 +1,695 @@
+﻿1
+00:00:00,000 --> 00:00:03,780
+In this part, we're going to introduce the Shader class
+
+2
+00:00:03,780 --> 00:00:06,290
+to make life easier for you.
+
+3
+00:00:06,290 --> 00:00:09,650
+There's a very unique approach to vector
+
+4
+00:00:09,650 --> 00:00:13,380
+in GLSL language to the Shader source.
+
+5
+00:00:13,380 --> 00:00:15,970
+You can name your component
+
+6
+00:00:15,970 --> 00:00:22,200
+XYZW or RGBA or STPQ.
+
+7
+00:00:22,200 --> 00:00:25,490
+This mechanism is called swizzling.
+
+8
+00:00:25,490 --> 00:00:31,320
+So let's consider, for example, vec3 v3  (2,3, 4)
+
+9
+00:00:31,320 --> 00:00:36,170
+When you create 2D vector
+
+10
+00:00:36,170 --> 00:00:41,470
+by just assigning X and Y components of v3 using v2 = v3.xy
+
+11
+00:00:41,470 --> 00:00:44,970
+v2 is now 2D vector (2, 3).
+
+12
+00:00:44,970 --> 00:00:52,820
+Similarly, you can assign v4 = v3.xxyz,
+
+13
+00:00:52,820 --> 00:00:57,230
+and then v4 become a 4D vector (2, 2, 3, 4).
+
+14
+00:00:57,230 --> 00:01:03,680
+Similarly, we can use RGBA, STPQ,
+
+15
+00:01:03,680 --> 00:01:07,390
+RGBA represents the color components. the texture
+
+16
+00:01:07,390 --> 00:01:14,180
+STPQ represents texture coordinates we will learn later.
+
+17
+00:01:14,180 --> 00:01:22,110
+But there's no difference between XYZW, RGBA, STPQ,
+
+18
+00:01:22,110 --> 00:01:26,610
+it's just a semantic difference.
+
+19
+00:01:26,610 --> 00:01:30,690
+Bear in mind, you can't use them in a hybrid.
+
+20
+00:01:30,690 --> 00:01:37,900
+For example, v3.xgbq is not allowed.
+
+21
+00:01:37,900 --> 00:01:39,770
+When we initialize the vector
+
+22
+00:01:39,770 --> 00:01:44,050
+we can use the constructors.
+
+23
+00:01:44,050 --> 00:01:48,130
+We can also initialize the vectors using swizzling.
+
+24
+00:01:48,130 --> 00:01:55,680
+So you can define a new 4D vector
+
+25
+00:01:55,680 --> 00:02:00,550
+by combining v4.XYZ with the last field 2.
+
+26
+00:02:00,550 --> 00:02:03,870
+The vertex attribute is going to have a different value
+
+27
+00:02:03,870 --> 00:02:06,570
+for each vertex.
+
+28
+00:02:06,570 --> 00:02:08,640
+But the uniform variable is going to be the same
+
+29
+00:02:08,640 --> 00:02:11,940
+for all vertex.
+
+30
+00:02:11,940 --> 00:02:14,400
+So there's two steps to deliver that value
+
+31
+00:02:14,400 --> 00:02:16,470
+to the uniform variable.
+
+32
+00:02:16,470 --> 00:02:23,590
+First of all glGetUniformLocation()  identifies
+
+33
+00:02:23,590 --> 00:02:27,530
+the location of the uniform variable with a specific name.
+
+34
+00:02:27,530 --> 00:02:31,220
+In this example, it's identifying a uniform
+
+35
+00:02:31,220 --> 00:02:34,860
+variable location called "outcolor".
+
+36
+00:02:34,860 --> 00:02:41,240
+Once figured out the location, we use glUniform4f)
+
+37
+00:02:41,240 --> 00:02:44,900
+to pass the value to that location.
+
+38
+00:02:44,900 --> 00:02:50,290
+Here, we're passing the 4 float values
+
+39
+00:02:50,290 --> 00:02:53,630
+because Outcolor is the 4D vector for the rgba.
+
+40
+00:02:53,630 --> 00:02:56,480
+So in our example, we're receiving the uniform
+
+41
+00:02:56,480 --> 00:02:59,500
+ourColor value at the fragment shader.
+
+42
+00:02:59,500 --> 00:03:03,440
+Uniform variable doesn't display in/out
+
+43
+00:03:03,440 --> 00:03:06,560
+as opposed to attribute variables.
+
+44
+00:03:06,560 --> 00:03:10,830
+Then we assign the uniform variable to FragColor
+
+45
+00:03:10,830 --> 00:03:13,890
+to determine the pixel color.
+
+46
+00:03:13,890 --> 00:03:18,130
+So if we look at this in a diagram,
+
+47
+00:03:18,130 --> 00:03:21,690
+the attributes are passed from application into the vertex shader
+
+48
+00:03:21,690 --> 00:03:25,940
+the uniform color is passed into the fragment shader.
+
+49
+00:03:25,940 --> 00:03:28,420
+GL_Position calculated in the vertex shader and
+
+50
+00:03:28,420 --> 00:03:33,330
+FragColor calculated in the fragment shader
+
+51
+00:03:33,330 --> 00:03:39,990
+are passing into H/W, finally,the pixel appears on the screen.
+
+52
+00:03:39,990 --> 00:03:41,950
+Uniform variable is not always passed
+
+53
+00:03:41,950 --> 00:03:45,530
+into the fragment shader.
+
+54
+00:03:45,530 --> 00:03:48,280
+It's going to be delivered to vertex shader as we need it
+
+55
+00:03:48,280 --> 00:03:51,860
+to be delivered to vertex shader.
+
+56
+00:03:51,860 --> 00:03:54,130
+But in the case of attribute variable,
+
+57
+00:03:54,130 --> 00:03:59,470
+it's only passed to the vertex shader.
+
+58
+00:03:59,470 --> 00:04:02,680
+07_ShaderClass has some other features
+
+59
+00:04:02,680 --> 00:04:04,610
+that are different.
+
+60
+00:04:04,610 --> 00:04:08,440
+Inside of that triangle, it's been color interpolated,
+
+61
+00:04:08,440 --> 00:04:12,250
+so we've got mixes of three different colors at three vertices.
+
+62
+00:04:12,250 --> 00:04:15,130
+It also uses a timer to loop through
+
+63
+00:04:15,130 --> 00:04:18,110
+the triangle darkening and lightening.
+
+64
+00:04:18,110 --> 00:04:24,640
+We also create and use shader classes
+
+65
+00:04:24,640 --> 00:04:27,890
+to simplify the complex commands involved in creating and using shaders.
+
+66
+00:04:27,890 --> 00:04:30,290
+The Shader class is defined inside
+
+67
+00:04:30,290 --> 00:04:34,250
+"shader.h" in the utils folder.
+
+68
+00:04:34,250 --> 00:04:37,890
+The entire class is embedded in the header file
+
+69
+00:04:37,890 --> 00:04:42,010
+so we just need to include the header file.
+
+70
+00:04:42,010 --> 00:04:45,450
+The Shader class is responsible for
+
+71
+00:04:45,450 --> 00:04:48,960
+reading in the shader file source,
+
+72
+00:04:48,960 --> 00:04:50,850
+compiling, linking, and creating the shader object.
+
+73
+00:04:50,850 --> 00:04:55,850
+It also provides functions
+
+74
+00:04:55,850 --> 00:04:58,320
+to make it easy to pass uniform variables to the shader.
+
+75
+00:04:58,320 --> 00:05:04,180
+We created the Shader class to simplify
+
+76
+00:05:04,180 --> 00:05:06,600
+the complex shader setup tasks we've been doing.
+
+77
+00:05:06,600 --> 00:05:09,670
+The Shader class stores the ID
+
+78
+00:05:09,670 --> 00:05:11,770
+of the created shader program object.
+
+79
+00:05:11,770 --> 00:05:15,010
+It also has a constructor that takes
+
+80
+00:05:15,010 --> 00:05:19,980
+vertex and fragment shader file names as parameters.
+
+81
+00:05:19,980 --> 00:05:24,350
+This constructor is typically used to initialize the shader.
+
+82
+00:05:24,350 --> 00:05:29,820
+If we don't call the constructor, we can use initShader()
+
+83
+00:05:29,820 --> 00:05:34,280
+to load the vertex and fragment shader files.
+
+84
+00:05:34,280 --> 00:05:39,370
+The use() function calls glUseProgram()
+
+85
+00:05:39,370 --> 00:05:44,460
+to make this shader available for subsequent renders.
+
+86
+00:05:44,460 --> 00:05:48,280
+There are other utility functions
+
+87
+00:05:48,280 --> 00:05:51,180
+that allow us to pass in uniform variables.
+
+88
+00:05:51,180 --> 00:05:53,630
+A constructor can be used
+
+89
+00:05:53,630 --> 00:05:56,640
+to generate shader objects
+
+90
+00:05:56,640 --> 00:05:59,180
+while loading shader files.
+
+91
+00:05:59,180 --> 00:06:03,310
+This constructor will read in the shader file,
+
+92
+00:06:03,310 --> 00:06:05,370
+create the shader objects,
+
+93
+00:06:05,370 --> 00:06:08,240
+create the shader program object,
+
+94
+00:06:08,240 --> 00:06:12,150
+and do all the initialization.
+
+95
+00:06:12,150 --> 00:06:14,170
+we can also use the initShader function
+
+96
+00:06:14,170 --> 00:06:19,030
+as a function that does the same thing.
+
+97
+00:06:19,030 --> 00:06:23,370
+When using the Shader class, we call the use() function
+
+98
+00:06:23,370 --> 00:06:30,320
+and then bind and draw the appropriate VAOs
+
+99
+00:06:30,320 --> 00:06:33,870
+When passing a uniform variable to a shader,
+
+100
+00:06:33,870 --> 00:06:37,410
+finding its location and passing a value
+
+101
+00:06:37,410 --> 00:06:40,860
+can be accomplished with a single function.
+
+102
+00:06:40,860 --> 00:06:45,400
+There are several functions for different types of variables:
+
+103
+00:06:45,400 --> 00:06:51,480
+setFloat, setBool, setInt, setVec2, setVec3,
+
+104
+00:06:51,480 --> 00:06:59,600
+setVec4, setMat2, setMat3, setMat4, etc.
+
+105
+00:06:59,600 --> 00:07:01,600
+Starting with this example, the vertex shader
+
+106
+00:07:01,600 --> 00:07:02,600
+and fragment shader are stored in different files.
+
+107
+00:07:02,600 --> 00:07:04,100
+Here, they are saved as 3.3.shader.vs
+
+108
+00:07:04,100 --> 00:07:06,100
+and 3.3.shader.fs.
+
+109
+00:07:06,100 --> 00:07:08,600
+Two attribute variables have been defined
+
+110
+00:07:08,600 --> 00:07:10,600
+in the vertex shader to store the position and color attributes.
+
+111
+00:07:10,600 --> 00:07:12,100
+The uniform variable, val,
+
+112
+00:07:12,100 --> 00:07:14,100
+is passed in from the OpenGL application program.
+
+113
+00:07:14,100 --> 00:07:16,100
+ourColor is a four-dimensional RGBA color vector.
+
+114
+00:07:16,100 --> 00:07:18,100
+The value of val is multiplied by each component of ourColor
+
+115
+00:07:18,100 --> 00:07:19,100
+and passed to the fragment shader.
+
+116
+00:07:19,100 --> 00:07:20,600
+In the fragment shader, ourColor is
+
+117
+00:07:20,600 --> 00:07:24,050
+assigned to the FragColor output variable as is.
+
+118
+00:07:24,050 --> 00:07:29,650
+In the Vertex attribute data, the position coordinates
+
+119
+00:07:29,650 --> 00:07:30,200
+are immediately followed by
+
+120
+00:07:30,200 --> 00:07:34,600
+the colors of each vertex as RGB values.
+
+121
+00:07:34,600 --> 00:07:38,030
+we may recall that
+
+122
+00:07:38,030 --> 00:07:42,060
+VBOs don't have a fixed format.
+
+123
+00:07:42,060 --> 00:07:47,170
+As such, the format of a VBO can vary from time to time.
+
+124
+00:07:47,170 --> 00:07:50,290
+We now have alternating position and color
+
+125
+00:07:50,290 --> 00:07:52,890
+stored in one VBO.
+
+126
+00:07:52,890 --> 00:07:57,820
+This means that the position (x, y, z) corresponding to
+
+127
+00:07:57,820 --> 00:08:03,780
+vertex1 is stored, followed by the color (r, g, b) of vertex1.
+
+128
+00:08:03,780 --> 00:08:08,120
+The position attributes have a starting offset of 0.
+
+129
+00:08:08,120 --> 00:08:12,200
+This means that they start at the beginning of the VBO.
+
+130
+00:08:12,200 --> 00:08:16,490
+The stride, spacing between subsequent positions, is 24.
+
+131
+00:08:16,490 --> 00:08:22,670
+This is because the float value is 4 bytes, and six floats,
+
+132
+00:08:22,670 --> 00:08:29,570
+three each for position and color, occupy a single vertex area.
+
+133
+00:08:29,570 --> 00:08:34,640
+The color attribute, on the other hand, starts at offset = 12.
+
+134
+00:08:34,640 --> 00:08:38,490
+Because the first 12 bytes are occupied by
+
+135
+00:08:38,490 --> 00:08:40,580
+the position of vertex 1.
+
+136
+00:08:40,580 --> 00:08:44,470
+The stride of the colors is also 24.
+
+137
+00:08:44,470 --> 00:08:49,500
+To pass the Position attribute,
+
+138
+00:08:49,500 --> 00:08:56,820
+we use glVertexAttribPointers() and glEnableVertexAttrib,
+
+139
+00:08:56,820 --> 00:09:01,320
+where the offset specified is 0, as seen above.
+
+140
+00:09:01,320 --> 00:09:08,630
+The stride is 6 * sizeof(float) = 6 * 4 = 24.
+
+141
+00:09:08,630 --> 00:09:10,940
+Secondly, the color attribute starts
+
+142
+00:09:10,940 --> 00:09:13,670
+after the position at tribute,
+
+143
+00:09:13,670 --> 00:09:17,590
+so its offset is 3 * 4 = 12.
+
+144
+00:09:17,590 --> 00:09:24,570
+The sride of the color attribute is also 24.
+
+145
+00:09:24,570 --> 00:09:27,690
+The colors of the pixels inside the triangle
+
+146
+00:09:27,690 --> 00:09:32,510
+are computed as an interpolation of the three vertex colors.
+
+147
+00:09:32,510 --> 00:09:36,830
+This interpolation is calculated based on
+
+148
+00:09:36,830 --> 00:09:40,290
+the pixel positions obtained in the rasterization stage.
+
+149
+00:09:40,290 --> 00:09:44,260
+Let the coordinates of the three vertices be
+
+150
+00:09:44,260 --> 00:09:49,200
+(x1, y1), (x2, y2), and (x3, y3), respectively.
+
+151
+00:09:49,200 --> 00:09:54,320
+And let the colors given to the three vertices be
+
+152
+00:09:54,320 --> 00:09:59,200
+c1, c2, and c3, respectively.
+
+153
+00:09:59,200 --> 00:10:06,860
+In the figure, the color at pixel (x4, y4) is computed as follows.
+
+154
+00:10:06,860 --> 00:10:16,370
+That is, it is proportional to the relative position of (x4, y4)
+
+155
+00:10:16,370 --> 00:10:21,250
+on the line segment with (x1, y1) and (x2, y2) as the two endpoints.
+
+156
+00:10:21,250 --> 00:10:29,220
+Similarly, the color of pixel (x5, y5) is computed
+
+157
+00:10:29,220 --> 00:10:35,150
+as an interpolation of (x1, y1) and (x3, y3).
+
+158
+00:10:35,150 --> 00:10:41,600
+Finally, the color of pixel (x6, y6) can be computed
+
+159
+00:10:41,600 --> 00:10:50,110
+as an interpolation of (x4, y4) and (x5, y5).
+
+160
+00:10:50,110 --> 00:10:52,350
+Now let's look at the part where we change
+
+161
+00:10:52,350 --> 00:10:55,160
+the color of the triangle over time.
+
+162
+00:10:55,160 --> 00:10:59,570
+We want to determine the color using the sin(t) function
+
+163
+00:10:59,570 --> 00:11:03,280
+computed for the time change t,
+
+164
+00:11:03,280 --> 00:11:06,460
+so we included the cmath header file
+
+165
+00:11:06,460 --> 00:11:10,830
+where the sin function is defined.
+
+166
+00:11:10,830 --> 00:11:16,370
+We use glfwGetTime
+
+167
+00:11:16,370 --> 00:11:19,020
+to get the current time provided by GLFW.
+
+168
+00:11:19,020 --> 00:11:23,630
+This function takes in the time that has passed
+
+169
+00:11:23,630 --> 00:11:29,180
+since the program started as timeValue, a float value in seconds.
+
+170
+00:11:29,180 --> 00:11:34,680
+The value of sin(timeValue) ranges from -1 to 1.
+
+171
+00:11:34,680 --> 00:11:41,180
+to make it in the range [0, 1], we divide the timeValue value in half
+
+172
+00:11:41,180 --> 00:11:44,510
+and add 0.5 to it
+
+173
+00:11:44,510 --> 00:11:48,460
+Now we can pass the calculated color
+
+174
+00:11:48,460 --> 00:11:53,260
+to the vertex shader as a uniform variable.

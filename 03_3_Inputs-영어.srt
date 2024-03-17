@@ -1,0 +1,699 @@
+﻿1
+00:00:00,000 --> 00:00:04,450
+We're going to look at keyboard input and
+
+2
+00:00:04,450 --> 00:00:07,420
+mouse input that GLFW handles for us.
+
+3
+00:00:07,420 --> 00:00:09,940
+The guide to GLFW's input
+
+4
+00:00:09,940 --> 00:00:13,110
+is going to be visible in the document page.
+
+5
+00:00:13,110 --> 00:00:15,800
+There are two ways that we can do
+
+6
+00:00:15,800 --> 00:00:17,680
+input processing on GLFW.
+
+7
+00:00:17,680 --> 00:00:20,200
+One is to register a callback function
+
+8
+00:00:20,200 --> 00:00:23,000
+so that when that input comes in,
+
+9
+00:00:23,000 --> 00:00:26,270
+the callback function automatically runs.
+
+10
+00:00:26,270 --> 00:00:31,850
+The other one is to use functions that start with glfwget...
+
+11
+00:00:31,850 --> 00:00:35,810
+to read the input state at that moment.
+
+12
+00:00:35,810 --> 00:00:38,060
+So one of the more stable ways to do this
+
+13
+00:00:38,060 --> 00:00:40,540
+is using  callback,
+
+14
+00:00:40,540 --> 00:00:42,490
+but in some cases
+
+15
+00:00:42,490 --> 00:00:44,360
+it's a little bit more comfortable
+
+16
+00:00:44,360 --> 00:00:46,540
+to just use GLFWGet.
+
+17
+00:00:46,540 --> 00:00:47,520
+For example, glfwGetCursorPos,
+
+18
+00:00:47,520 --> 00:00:50,600
+which returns
+
+19
+00:00:50,600 --> 00:00:58,170
+the current mouse position.
+
+20
+00:00:58,170 --> 00:01:00,310
+The glfwSetKeyCallback is a function
+
+21
+00:01:00,310 --> 00:01:02,000
+that register a callback function. You can specify
+
+22
+00:01:02,000 --> 00:01:06,740
+the appropriate callback function name in key_callback.
+
+23
+00:01:06,740 --> 00:01:08,290
+So when the callback function calls,
+
+24
+00:01:08,290 --> 00:01:13,030
+it's going to give us a macro, a constant, which represents a key,
+
+25
+00:01:13,030 --> 00:01:16,720
+and an action as a parameter.
+
+26
+00:01:16,720 --> 00:01:20,960
+Key macro is well listed in this document page on GLFW
+
+27
+00:01:20,960 --> 00:01:24,480
+so please refer to it.
+
+28
+00:01:24,480 --> 00:01:30,380
+There are three actions. GLFW_PRESS, as soon as key is pressed,
+
+29
+00:01:30,380 --> 00:01:36,520
+GLFW_REPEAT occurs when the key is held down,
+
+30
+00:01:36,520 --> 00:01:45,310
+and GLFW_RELEASE happens as soon as key is released.
+
+31
+00:01:45,310 --> 00:01:47,650
+glfwGetKey is checking whether the keyboard input happened
+
+32
+00:01:47,650 --> 00:01:50,750
+or not by the calling from the application program itself.
+
+33
+00:01:50,750 --> 00:01:54,610
+The key parameter indicates the key the program wants to check,
+
+34
+00:01:54,610 --> 00:02:03,620
+and the return value is an integer
+
+35
+00:02:03,620 --> 00:02:07,170
+that is either GLFW_PRESS or GLFW_RELEASE (no GLFW_REPEAT).
+
+36
+00:02:07,170 --> 00:02:12,630
+In this example program, we want to check
+
+37
+00:02:12,630 --> 00:02:16,640
+if the 'f' key is pressed and do something.
+
+38
+00:02:16,640 --> 00:02:19,070
+The glfwSetCursorPosCallback is a call repeated continuously
+
+39
+00:02:19,070 --> 00:02:21,190
+when the position of the mouse cursor changes,
+
+40
+00:02:21,190 --> 00:02:26,000
+that is, when the mouse is moving.
+
+41
+00:02:26,000 --> 00:02:30,100
+It returns (xpos, ypos) as a pair of double values,
+
+42
+00:02:30,100 --> 00:02:33,370
+represented as screen coordinates.
+
+43
+00:02:33,370 --> 00:02:37,600
+The screen coordinates are the space where the top left is (0,0)
+
+44
+00:02:37,600 --> 00:02:43,490
+and the bottom right is the display's resolution.
+
+45
+00:02:43,490 --> 00:02:46,950
+One thing to remember is that this event will continue to fire
+
+46
+00:02:46,950 --> 00:02:52,420
+regardless of whether the mouse button is pressed or not.
+
+47
+00:02:52,420 --> 00:02:57,090
+Also, (xpos, ypos) is returned regardless of
+
+48
+00:02:57,090 --> 00:03:01,310
+whether the mouse cursor is inside the drawing window or not.
+
+49
+00:03:01,310 --> 00:03:05,860
+Calling the glfwGetCursorPos function returns
+
+50
+00:03:05,860 --> 00:03:10,570
+the position of the current mouse cursor.
+
+51
+00:03:10,570 --> 00:03:14,930
+There are events occurring when Cursor enters and exits a window.
+
+52
+00:03:14,930 --> 00:03:20,230
+These events are also known as window focus/unfocus.
+
+53
+00:03:20,230 --> 00:03:23,890
+In the callback, entered is a boolean variable that,
+
+54
+00:03:23,890 --> 00:03:27,320
+if true, is fired when the cursor enters the window,
+
+55
+00:03:27,320 --> 00:03:32,470
+and if false, is fired when it exits.
+
+56
+00:03:32,470 --> 00:03:34,700
+glfwSetMouseButtonCallback occurs
+
+57
+00:03:34,700 --> 00:03:39,140
+when the mouse button is pressed or released.
+
+58
+00:03:39,140 --> 00:03:43,140
+Timer functions include glfwGetTime (), which returns
+
+59
+00:03:43,140 --> 00:03:47,920
+the elapsed time in seconds
+
+60
+00:03:47,920 --> 00:03:50,730
+since glfw was first initialized.
+
+61
+00:03:50,730 --> 00:03:52,040
+Because it returns a double value,
+
+62
+00:03:52,040 --> 00:03:56,810
+we can get a precise time value.
+
+63
+00:03:56,810 --> 00:03:59,770
+You can use glfwSetTime
+
+64
+00:03:59,770 --> 00:04:02,770
+to set the timer to the time you want.
+
+65
+00:04:02,770 --> 00:04:08,240
+Now let's look at a program using the 'f' key to flip the triangle
+
+66
+00:04:08,240 --> 00:04:13,600
+and change the color with r, g, b keys.
+
+67
+00:04:13,600 --> 00:04:16,730
+In vertex shader, aPos is passed
+
+68
+00:04:16,730 --> 00:04:20,990
+as vertex position attribute as before,
+
+69
+00:04:20,990 --> 00:04:25,250
+and another uniform variable named multY is received.
+
+70
+00:04:25,250 --> 00:04:28,640
+MultY is 1 or -1,
+
+71
+00:04:28,640 --> 00:04:31,780
+multiplied by the y coordinate of the vertex,
+
+72
+00:04:31,780 --> 00:04:35,810
+and when it is -1, the triangle is flipped upside down.
+
+73
+00:04:35,810 --> 00:04:39,410
+Fragment shaders are the same as before.
+
+74
+00:04:39,410 --> 00:04:44,190
+The outColor is not received from the vertex shader,
+
+75
+00:04:44,190 --> 00:04:49,310
+but is passed directly from the application program to the uniform.
+
+76
+00:04:49,310 --> 00:04:51,040
+The global variables of the application program are
+
+77
+00:04:51,040 --> 00:04:55,490
+bool type verticalFlip,
+
+78
+00:04:55,490 --> 00:05:00,860
+colorR, colorG, colorB representing the color of the triangle.
+
+79
+00:05:00,860 --> 00:05:05,770
+Keyboard callback function key_callback is registered.
+
+80
+00:05:05,770 --> 00:05:08,640
+When f key is pressed on key_callback,
+
+81
+00:05:08,640 --> 00:05:12,260
+verticalFlip is toggled to true and false.
+
+82
+00:05:12,260 --> 00:05:16,040
+When r key is pressed, colorR = 1.0,
+
+83
+00:05:16,040 --> 00:05:19,410
+and colorG and colorB are set to 0.
+
+84
+00:05:19,410 --> 00:05:26,240
+Likewise, when g and b keys are pressed.
+
+85
+00:05:26,240 --> 00:05:29,020
+Check the verticalFlip
+
+86
+00:05:29,020 --> 00:05:30,970
+before rendering the triangle in the main loop,
+
+87
+00:05:30,970 --> 00:05:36,090
+passing a multY uniform variable as a -1 value if true.
+
+88
+00:05:36,090 --> 00:05:39,550
+If it is false, just pass 1.
+
+89
+00:05:39,550 --> 00:05:41,200
+In addition, as the Fragment shader, the color of the triangle
+
+90
+00:05:41,200 --> 00:05:46,490
+is passed directly as a uniform variable outColor.
+
+91
+00:05:46,490 --> 00:05:50,570
+Because outColor is a 4D vector that represents RGBA,
+
+92
+00:05:50,570 --> 00:05:57,780
+we pass 1.0 along with colorR, colorG, and colorB.
+
+93
+00:05:57,780 --> 00:05:59,470
+Program 11_Polyline will enter the points one by one
+
+94
+00:05:59,470 --> 00:06:03,210
+by pressing the left mouse button.
+
+95
+00:06:03,210 --> 00:06:07,790
+The line segments connecting the input points are displayed.
+
+96
+00:06:07,790 --> 00:06:10,490
+The last line segment changes continuously
+
+97
+00:06:10,490 --> 00:06:13,090
+according to the position of the candidate point to be newly input,
+
+98
+00:06:13,090 --> 00:06:17,450
+so that the line segment to be input can be predicted.
+
+99
+00:06:17,450 --> 00:06:22,460
+don't need to hold down the left mouse button after entering a point.
+
+100
+00:06:22,460 --> 00:06:27,380
+If you press'r' key, all input points disappear and reset.
+
+101
+00:06:27,380 --> 00:06:30,150
+As the color of the input points continues to change,
+
+102
+00:06:30,150 --> 00:06:32,990
+the color of the line segment that connects the points
+
+103
+00:06:32,990 --> 00:06:36,820
+interpolates the color of the endpoints.
+
+104
+00:06:36,820 --> 00:06:39,840
+Let's take a look at the Global variables.
+
+105
+00:06:39,840 --> 00:06:44,460
+The number of vertices that can be entered is MAX_VERTEX = 200.
+
+106
+00:06:44,460 --> 00:06:48,710
+Since we want to represent the Position attribute in 3D coordinates,
+
+107
+00:06:48,710 --> 00:06:54,260
+the size of the vertex position attribute data,
+
+108
+00:06:54,260 --> 00:06:57,950
+MAX_VERTEX_SIZE, is MAX_VERTEX * 3.
+
+109
+00:06:57,950 --> 00:07:01,060
+Since we want to represent the Color attribute in RGBA,
+
+110
+00:07:01,060 --> 00:07:03,650
+the size of the color attribute data is
+
+111
+00:07:03,650 --> 00:07:06,050
+MAX_COLOR_SIZE = MAX_VERTEX * 4.
+
+112
+00:07:06,050 --> 00:07:14,190
+nPoint will store the number of points currently entered.
+
+113
+00:07:14,190 --> 00:07:16,890
+The initial value is 0.
+
+114
+00:07:16,890 --> 00:07:20,540
+stopInput will become true when the right mouse button is pressed,
+
+115
+00:07:20,540 --> 00:07:25,190
+preventing further input.
+
+116
+00:07:25,190 --> 00:07:28,580
+nextPoint serves to allow one more point
+
+117
+00:07:28,580 --> 00:07:32,510
+to be entered when the mouse cursor starts moving.
+
+118
+00:07:32,510 --> 00:07:37,250
+VBO[0] and VBO[1] are
+
+119
+00:07:37,250 --> 00:07:39,580
+two buffers for position and color, respectively.
+
+120
+00:07:39,580 --> 00:07:43,620
+vertices stores the position data,
+
+121
+00:07:43,620 --> 00:07:45,900
+which holds the vertices entered so far.
+
+122
+00:07:45,900 --> 00:07:51,140
+colors will hold the color of each input vertex.
+
+123
+00:07:51,140 --> 00:07:53,540
+colorOriginal is the six default colors,
+
+124
+00:07:53,540 --> 00:08:00,060
+and points will be assigned a color in the order they come in.
+
+125
+00:08:00,060 --> 00:08:04,690
+We need a Keyboard input callback that accepts the key 'r'.
+
+126
+00:08:04,690 --> 00:08:09,150
+We also specified a CursorPosCallback to catch mouse movement
+
+127
+00:08:09,150 --> 00:08:10,680
+and a MouseButtonCallback
+
+128
+00:08:10,680 --> 00:08:15,490
+to accept the left and right mouse buttons.
+
+129
+00:08:15,490 --> 00:08:20,830
+Let's look at the part of the program that defines VAO and VBO.
+
+130
+00:08:20,830 --> 00:08:27,260
+There are two VBOs (VBO [0], VBO [1]) in one VAO.
+
+131
+00:08:27,260 --> 00:08:32,960
+VBO [0] has 3D coordinates as position attribute.
+
+132
+00:08:32,960 --> 00:08:39,900
+VBO [1] has RGBA (4D) as the color attribute.
+
+133
+00:08:39,900 --> 00:08:44,320
+VBO [0] is associated with attribute id = 0.
+
+134
+00:08:44,320 --> 00:08:49,090
+VBO [1] is associated with attribute id = 1.
+
+135
+00:08:49,090 --> 00:08:52,920
+When the key 'r' comes in, set nPoints = 0
+
+136
+00:08:52,920 --> 00:08:55,900
+and initialize both stopInput and nextInput.
+
+137
+00:08:55,900 --> 00:08:59,890
+In other words, go back to the initial state of  no input at all.
+
+138
+00:08:59,890 --> 00:09:02,580
+So if the left mouse button is pressed,
+
+139
+00:09:02,580 --> 00:09:06,500
+if stopInput is true, we don't accept no more input
+
+140
+00:09:06,500 --> 00:09:11,030
+we get the point input when stopInput = false
+
+141
+00:09:11,030 --> 00:09:14,180
+get the current mouse position
+
+142
+00:09:14,180 --> 00:09:16,800
+(xpos, ypos) using glfwGetCursorPos
+
+143
+00:09:16,800 --> 00:09:20,890
+convert (xpos, ypos) into the coordinates in space [-1, 1]
+
+144
+00:09:20,890 --> 00:09:25,680
+by normalizing it using normalize_cursor_position function.
+
+145
+00:09:25,680 --> 00:09:28,760
+And then update the position attribute
+
+146
+00:09:28,760 --> 00:09:30,840
+in VBO[0].
+
+147
+00:09:30,840 --> 00:09:35,750
+Specifically if nPoints = 0, we make nPoints = 1,
+
+148
+00:09:35,750 --> 00:09:38,910
+to make the state as other usual ones.
+
+149
+00:09:38,910 --> 00:09:43,570
+Let's consider when right mouse button pressed.
+
+150
+00:09:43,570 --> 00:09:47,390
+Again, we only want to add the last point
+
+151
+00:09:47,390 --> 00:09:49,410
+if stop input is false.
+
+152
+00:09:49,410 --> 00:09:52,110
+And make stopInput to be true.
+
+153
+00:09:52,110 --> 00:09:54,710
+The Y at the screen coordinates increases from 0 to SCR_HEIGHT,
+
+154
+00:09:54,710 --> 00:10:00,910
+from top to bottom.
+
+155
+00:10:00,910 --> 00:10:04,710
+and x increases from 0 to SCR_WIDTH, left to right.
+
+156
+00:10:04,710 --> 00:10:11,710
+we want to change it to OpenGL's NDC (-1,-1) ~ (1,1).
+
+157
+00:10:11,710 --> 00:10:17,010
+First x coords. of screen coordinates into [0, 1]
+
+158
+00:10:17,010 --> 00:10:21,300
+by (x / SCR_WIDTH),
+
+159
+00:10:21,300 --> 00:10:25,300
+Double it, subtract one,
+
+160
+00:10:25,300 --> 00:10:27,150
+then it converts between [-1, 1].
+
+161
+00:10:27,150 --> 00:10:29,860
+In the case of Y Coordinates, we can follow a similar process,
+
+162
+00:10:29,860 --> 00:10:35,760
+and multiply the result by -1 to change the number up and down.
+
+163
+00:10:35,760 --> 00:10:40,160
+So update_vb_vertex is what we're going to do
+
+164
+00:10:40,160 --> 00:10:44,830
+when a new vertex comes in,
+
+165
+00:10:44,830 --> 00:10:50,810
+it's going to update the existing VBO at vIndex.
+
+166
+00:10:50,810 --> 00:10:53,990
+The glBufferSubData is going to update just a portion of VBO.
+
+167
+00:10:53,990 --> 00:10:57,570
+set the offset (Starting) vIndex * sizeof(float) *3.
+
+168
+00:10:57,570 --> 00:11:02,210
+That's the last position where the current data in VBO ended.
+
+169
+00:11:02,210 --> 00:11:06,690
+we're going to add just one point at the  offset
+
+170
+00:11:06,690 --> 00:11:10,910
+And the size of the data to be added is  sizeof(float) * 3.
+
+171
+00:11:10,910 --> 00:11:13,540
+Finally the new data to be added
+
+172
+00:11:13,540 --> 00:11:16,900
+is n[3] which is the coordinates of the new point to be added.
+
+173
+00:11:16,900 --> 00:11:20,850
+In the rendering part,
+
+174
+00:11:20,850 --> 00:11:23,140
+we draw the GL_LINE_STRIP of size nPoints
+
+175
+00:11:23,140 --> 00:11:28,270
+to draw the line strip which is currently inputted.
