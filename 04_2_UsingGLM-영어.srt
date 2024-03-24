@@ -1,0 +1,523 @@
+﻿1
+00:00:00,000 --> 00:00:04,220
+Let’s start the UsingGLM lecture.
+
+2
+00:00:04,220 --> 00:00:06,520
+GLM is a useful library
+
+3
+00:00:06,520 --> 00:00:08,200
+used to facilitate vector and matrix operations
+
+4
+00:00:08,200 --> 00:00:11,930
+in OpenGL.
+
+5
+00:00:11,930 --> 00:00:14,620
+In fact, programmers can create
+
+6
+00:00:14,620 --> 00:00:18,300
+and use vector or matrix classes themselves,
+
+7
+00:00:18,300 --> 00:00:21,210
+but since GLM is a proven library,
+
+8
+00:00:21,210 --> 00:00:23,840
+we will use it.
+
+9
+00:00:23,840 --> 00:00:26,000
+GLM is widely used to implement
+
+10
+00:00:26,000 --> 00:00:28,060
+not only OpenGL
+
+11
+00:00:28,060 --> 00:00:30,100
+but also many applications
+
+12
+00:00:30,100 --> 00:00:33,060
+that require a linear system.
+
+13
+00:00:33,060 --> 00:00:36,800
+Since GLM is fully implemented in the header file,
+
+14
+00:00:36,800 --> 00:00:40,450
+you only need to include the necessary header files,
+
+15
+00:00:40,450 --> 00:00:43,020
+and separate processes
+
+16
+00:00:43,020 --> 00:00:44,860
+such as linking or compiling are not required.
+
+17
+00:00:44,860 --> 00:00:48,670
+We already have GLM installed.
+
+18
+00:00:48,670 --> 00:00:54,580
+So, just include the header files similar to this example.
+
+19
+00:00:54,580 --> 00:00:59,000
+Let's look briefly at an example using GLM.
+
+20
+00:00:59,000 --> 00:01:02,680
+glm::vec4 is a 4D vector type
+
+21
+00:01:02,680 --> 00:01:06,660
+and can be initialized like this.
+
+22
+00:01:06,660 --> 00:01:10,300
+glm::mat4 is a 4x4 matrix type,
+
+23
+00:01:10,300 --> 00:01:13,640
+which can be used to represent the transformation matrices
+
+24
+00:01:13,640 --> 00:01:17,820
+we want to use.
+
+25
+00:01:17,820 --> 00:01:21,760
+When initializing, if you enter only one value, 1.0,
+
+26
+00:01:21,760 --> 00:01:25,820
+it will be initialized as an identity matrix.
+
+27
+00:01:25,820 --> 00:01:28,810
+If you enter only one value other than 1,
+
+28
+00:01:28,810 --> 00:01:34,590
+it becomes a matrix that places that value
+
+29
+00:01:34,590 --> 00:01:37,920
+in the diagonal elements.
+
+30
+00:01:37,920 --> 00:01:40,000
+In order to multiply matrices for composite transformation,
+
+31
+00:01:40,000 --> 00:01:46,520
+a matrix called trans is first initialized as an identity matrix.
+
+32
+00:01:46,520 --> 00:01:50,720
+The glm::translate function creates a translation matrix
+
+33
+00:01:50,720 --> 00:01:55,040
+that translates by the following parameter,
+
+34
+00:01:55,040 --> 00:02:00,060
+vec3(1, 1, 0), and returns it.
+
+35
+00:02:00,060 --> 00:02:04,930
+Now trans has become a translation matrix.
+
+36
+00:02:04,930 --> 00:02:10,050
+To actually translate the coordinates of a vector (or point),
+
+37
+00:02:10,050 --> 00:02:13,140
+simply multiply trans and vector.
+
+38
+00:02:13,140 --> 00:02:20,020
+Here, (1, 0, 0) is translated by (1, 1, 0),
+
+39
+00:02:20,020 --> 00:02:23,440
+so (2, 1, 0) comes out.
+
+40
+00:02:23,440 --> 00:02:28,410
+This time, it is a case of applying scaling and rotation.
+
+41
+00:02:28,410 --> 00:02:34,120
+First, prepare identity matrix I as in the previous example.
+
+42
+00:02:34,120 --> 00:02:38,910
+Next, multiply I by a rotation
+
+43
+00:02:38,910 --> 00:02:41,930
+matrix that rotates 90 degrees to obtain the IR matrix.
+
+44
+00:02:41,930 --> 00:02:46,740
+The last parameter of the rotate function is the z-axis, the rotation axis.
+
+45
+00:02:46,740 --> 00:02:53,440
+Calculate the IRS matrix by multiplying IR by the scale matrix.
+
+46
+00:02:53,440 --> 00:03:00,190
+Multiply IRS and vector v to scale and rotate v.
+
+47
+00:03:00,190 --> 00:03:08,590
+The order of applying transformation is to scale first and then rotate.
+
+48
+00:03:08,590 --> 00:03:11,710
+This time, we will change the position of the vertex
+
+49
+00:03:11,710 --> 00:03:15,590
+using the transformation
+
+50
+00:03:15,590 --> 00:03:21,110
+matrix passed from the application program to the shader.
+
+51
+00:03:21,110 --> 00:03:23,620
+A 4x4 matrix called uniform mat4 transform was passed to the shader.
+
+52
+00:03:23,620 --> 00:03:28,260
+The final vertex position
+
+53
+00:03:28,260 --> 00:03:32,780
+gl_Position is calculated by multiplying the transform
+
+54
+00:03:32,780 --> 00:03:40,030
+matrix and aPos vector.
+
+55
+00:03:40,030 --> 00:03:44,670
+In the previous slides, the position of the transformed vertex
+
+56
+00:03:44,670 --> 00:03:48,030
+within the application program was calculated.
+
+57
+00:03:48,030 --> 00:03:52,800
+However, a more commonly used method is to pass the matrix
+
+58
+00:03:52,800 --> 00:03:57,550
+and original vertex positions separately
+
+59
+00:03:57,550 --> 00:04:01,310
+and multiply them in the shader, as in this example.
+
+60
+00:04:01,310 --> 00:04:04,680
+In this way, it is possible to transmit the original
+
+61
+00:04:04,680 --> 00:04:07,210
+vertex position to the GPU only once,
+
+62
+00:04:07,210 --> 00:04:11,730
+and update it with the transformed position by transmitting only the matrix again
+
+63
+00:04:11,730 --> 00:04:17,260
+each time the transformation changes.
+
+64
+00:04:17,260 --> 00:04:20,200
+This code shows
+
+65
+00:04:20,200 --> 00:04:22,440
+the process of transferring the transformation
+
+66
+00:04:22,440 --> 00:04:25,600
+matrix from the application program to the shader.
+
+67
+00:04:25,600 --> 00:04:28,330
+First, find the location of the shader's uniform
+
+68
+00:04:28,330 --> 00:04:32,260
+variable named "transform".
+
+69
+00:04:32,260 --> 00:04:36,770
+The glGetUniformLocation function is used in this process.
+
+70
+00:04:36,770 --> 00:04:45,660
+Then pass the matrix using glUniformMatrix4fv.
+
+71
+00:04:45,660 --> 00:04:51,300
+transformLoc is the location we found earlier.
+
+72
+00:04:51,300 --> 00:04:55,000
+1 is the number of matrices to be transmitted.
+
+73
+00:04:55,000 --> 00:04:58,650
+The next one is the transpose option.
+
+74
+00:04:58,650 --> 00:05:04,370
+When transposing a Matrix, use GL_TRUE.
+
+75
+00:05:04,370 --> 00:05:07,840
+Here we don't need to transpose
+
+76
+00:05:07,840 --> 00:05:12,220
+so we just use GL_FALSE.
+
+77
+00:05:12,220 --> 00:05:17,820
+The last parameter is the matrix variable to be passed.
+
+78
+00:05:17,820 --> 00:05:23,980
+To convert from GLM format to GLSL format,
+
+79
+00:05:23,980 --> 00:05:30,260
+matrix trans was passed by wrapping it in glm::value_ptr.
+
+80
+00:05:30,260 --> 00:05:33,950
+In this program, after creating a box,
+
+81
+00:05:33,950 --> 00:05:39,170
+we will apply the transformations of scale,
+
+82
+00:05:39,170 --> 00:05:43,360
+rotate, and translate to it as a composite transformation.
+
+83
+00:05:43,360 --> 00:05:45,700
+The transformation matrices required in the render
+
+84
+00:05:45,700 --> 00:05:50,250
+function are multiplied.
+
+85
+00:05:50,250 --> 00:05:53,520
+First, create an identity matrix
+
+86
+00:05:53,520 --> 00:05:59,670
+and multiply it by the translate, rotate, and scale matrices in order.
+
+87
+00:05:59,670 --> 00:06:03,860
+As mentioned several times, the order
+
+88
+00:06:03,860 --> 00:06:08,420
+in which matrices are multiplied is opposite to the order in which transformations are applied.
+
+89
+00:06:08,420 --> 00:06:12,770
+Once the matrix is calculated, we pass it to the shader.
+
+90
+00:06:12,770 --> 00:06:17,760
+After that, you can render VAO.
+
+91
+00:06:17,760 --> 00:06:20,020
+Let's try some experiments.
+
+92
+00:06:20,020 --> 00:06:23,370
+In this example, we initially initialized the transformation
+
+93
+00:06:23,370 --> 00:06:26,730
+matrix to identity
+
+94
+00:06:26,730 --> 00:06:30,560
+and did not add any other transformations.
+
+95
+00:06:30,560 --> 00:06:33,650
+In this case, none of the scale,
+
+96
+00:06:33,650 --> 00:06:36,950
+rotation, or translation are applied,
+
+97
+00:06:36,950 --> 00:06:41,600
+so the box is larger than the previous program, does not rotate,
+
+98
+00:06:41,600 --> 00:06:46,430
+and its center is located in the middle of the screen.
+
+99
+00:06:46,430 --> 00:06:50,000
+In this case, only scale is applied.
+
+100
+00:06:50,000 --> 00:06:54,830
+Rotation and translation were not performed.
+
+101
+00:06:54,830 --> 00:07:00,350
+In this case, rotation and scale are applied.
+
+102
+00:07:00,350 --> 00:07:03,230
+Because no translation has been applied,
+
+103
+00:07:03,230 --> 00:07:06,200
+the rotating box is in the center of the screen.
+
+104
+00:07:06,200 --> 00:07:13,960
+In this case, scale, rotation, and translation are all applied.
+
+105
+00:07:13,960 --> 00:07:17,130
+In this example, the order of applying scale
+
+106
+00:07:17,130 --> 00:07:23,450
+first and then rotation and translation was changed.
+
+107
+00:07:23,450 --> 00:07:27,220
+If you translate first and then rotate,
+
+108
+00:07:27,220 --> 00:07:31,730
+the box will draw a large circle at the translated position
+
+109
+00:07:31,730 --> 00:07:34,780
+and rotate around the origin.
+
+110
+00:07:34,780 --> 00:07:39,320
+However, if rotation is applied first and then translation is performed,
+
+111
+00:07:39,320 --> 00:07:45,190
+the box will first rotate on its own
+
+112
+00:07:45,190 --> 00:07:49,070
+based on the center of the box at the origin, producing the effect of translation.
+
+113
+00:07:49,070 --> 00:07:54,460
+Please watch the videos and see the differences.
+
+114
+00:07:54,460 --> 00:07:59,540
+In this program, the two squares have different scales
+
+115
+00:07:59,540 --> 00:08:04,280
+and rotate at different speeds.
+
+116
+00:08:04,280 --> 00:08:09,290
+Speed1 and speed2 are defined as global variables.
+
+117
+00:08:09,290 --> 00:08:15,200
+Speed1 represents 90 degrees per second,
+
+118
+00:08:15,200 --> 00:08:18,460
+and speed2 represents 45 degrees per second.
+
+119
+00:08:18,460 --> 00:08:23,600
+In the rendering part, the first thing to do is to draw a red square in the upper left corner.
+
+120
+00:08:23,600 --> 00:08:28,920
+Create a composite transformation matrix by multiplying the scale,
+
+121
+00:08:28,920 --> 00:08:32,670
+rotate, and translation matrices.
+
+122
+00:08:32,670 --> 00:08:37,800
+We used speed1 to calculate the rotation angle.
+
+123
+00:08:37,800 --> 00:08:43,230
+Also, the scale was set to 0.5 in all x, y, and z axes.
+
+124
+00:08:43,230 --> 00:08:48,270
+Then, the calculated transformation matrix and color (red)
+
+125
+00:08:48,270 --> 00:08:51,850
+were passed to the shader as uniform variables.
+
+126
+00:08:51,850 --> 00:08:56,920
+It is simple to use the set function provided by the Shader object.
+
+127
+00:08:56,920 --> 00:09:01,120
+After that, you can draw VAO.
+
+128
+00:09:01,120 --> 00:09:03,970
+This is the part where you draw the second square.
+
+129
+00:09:03,970 --> 00:09:07,580
+Non-uniform scaling was applied to the second rectangle,
+
+130
+00:09:07,580 --> 00:09:14,970
+and it was scaled by 0.3, 0.5, and 1.0 times in the x, y, and z directions, respectively.
+
+131
+00:09:14,970 --> 00:09:18,520
+Yellow color has been sent to the shader
