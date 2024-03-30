@@ -1,0 +1,623 @@
+﻿1
+00:00:00,000 --> 00:00:05,300
+In this note, we learn about projection
+
+2
+00:00:05,300 --> 00:00:07,450
+transformation and viewport transformation,
+
+3
+00:00:07,450 --> 00:00:11,380
+which convert view space to clip space.
+
+4
+00:00:11,380 --> 00:00:14,290
+The clipping process refers to the process of separating the inner part
+
+5
+00:00:14,290 --> 00:00:19,010
+from the outer part
+
+6
+00:00:19,010 --> 00:00:23,200
+and drawing only the inner part
+
+7
+00:00:23,200 --> 00:00:26,750
+when a triangle spans the boundary of the clipping volume.
+
+8
+00:00:26,750 --> 00:00:30,180
+In the picture on the left,
+
+9
+00:00:30,180 --> 00:00:33,390
+only the parts inside the clipping volume among the triangles are visible,
+
+10
+00:00:33,390 --> 00:00:39,250
+and the remaining parts that are clipped out are not visible on the screen.
+
+11
+00:00:39,250 --> 00:00:43,430
+The picture on the right lists
+
+12
+00:00:43,430 --> 00:00:47,230
+the cases in which line segments can be positioned
+
+13
+00:00:47,230 --> 00:00:49,340
+relative to the clipping volume.
+
+14
+00:00:49,340 --> 00:00:54,110
+A is completely outside the clipping volume, B
+
+15
+00:00:54,110 --> 00:00:57,080
+is completely inside, and C and D
+
+16
+00:00:57,080 --> 00:01:02,540
+are partially inside.
+
+17
+00:01:02,540 --> 00:01:07,510
+Because an object defined in 3D must be drawn on a 2D screen,
+
+18
+00:01:07,510 --> 00:01:11,060
+mapping from 3D to 2D is necessary.
+
+19
+00:01:11,060 --> 00:01:14,270
+This process is called projection.
+
+20
+00:01:14,270 --> 00:01:19,740
+In the picture, you can see that points are projected as points
+
+21
+00:01:19,740 --> 00:01:23,490
+where the projectors and the view plane intersect.
+
+22
+00:01:23,490 --> 00:01:28,940
+Here, the projector is the COP, that is, a straight line
+
+23
+00:01:28,940 --> 00:01:33,290
+connecting the position of the camera
+
+24
+00:01:33,290 --> 00:01:36,000
+and the point on the object.
+
+25
+00:01:36,000 --> 00:01:38,820
+There are two types of projection.
+
+26
+00:01:38,820 --> 00:01:42,660
+First, parallel projection is when the COP is infinitely far away.
+
+27
+00:01:42,660 --> 00:01:46,090
+All projectors are parallel.
+
+28
+00:01:46,090 --> 00:01:49,010
+In this case, the size ratio
+
+29
+00:01:49,010 --> 00:01:52,420
+of the object is maintained and projected.
+
+30
+00:01:52,420 --> 00:01:54,550
+It is different from the real world
+
+31
+00:01:54,550 --> 00:01:58,430
+we live in because
+
+32
+00:01:58,430 --> 00:02:00,140
+there is no sense of perspective.
+
+33
+00:02:00,140 --> 00:02:03,230
+Parallel projection is used in mechanical design
+
+34
+00:02:03,230 --> 00:02:06,410
+where accuracy in size or distance is required.
+
+35
+00:02:06,410 --> 00:02:08,770
+In perspective projection, the COP exists
+
+36
+00:02:08,770 --> 00:02:12,100
+at a finite distance.
+
+37
+00:02:12,100 --> 00:02:15,680
+This is a more realistic projection method.
+
+38
+00:02:15,680 --> 00:02:21,150
+Distant objects are projected as small and close objects are projected as large,
+
+39
+00:02:21,150 --> 00:02:25,570
+so the ratio of their actual size is not maintained.
+
+40
+00:02:25,570 --> 00:02:27,970
+In computer graphics,
+
+41
+00:02:27,970 --> 00:02:32,000
+perspective projection is mostly used.
+
+42
+00:02:32,000 --> 00:02:34,300
+Parallel projection is simple.
+
+43
+00:02:34,300 --> 00:02:37,890
+Just keep the x and y coordinates of the 3D coordinates
+
+44
+00:02:37,890 --> 00:02:40,630
+and ignore the z coordinate.
+
+45
+00:02:40,630 --> 00:02:44,730
+Let d be the distance between COP and view plane.
+
+46
+00:02:44,730 --> 00:02:48,740
+Assume that Point Pc = (xc, yc, zc) exists in camera space.
+
+47
+00:02:48,740 --> 00:02:52,970
+The parallel projection matrix is as simple as this.
+
+48
+00:02:52,970 --> 00:02:56,560
+The x and y coordinates remain the same,
+
+49
+00:02:56,560 --> 00:03:02,780
+and the z coordinate becomes d.
+
+50
+00:03:02,780 --> 00:03:07,170
+There is a parallel projection matrix provided by GLM.
+
+51
+00:03:07,170 --> 00:03:11,010
+The glm::ortho function is used,
+
+52
+00:03:11,010 --> 00:03:13,790
+and the parameters represent the left and right ranges,
+
+53
+00:03:13,790 --> 00:03:15,940
+bottom and top ranges,
+
+54
+00:03:15,940 --> 00:03:20,170
+and near and far ranges, respectively.
+
+55
+00:03:20,170 --> 00:03:26,880
+Only those within this range will be clipped and converted to NDC.
+
+56
+00:03:26,880 --> 00:03:30,020
+Now let's define the view volume to take perspective
+
+57
+00:03:30,020 --> 00:03:33,130
+projection into account.
+
+58
+00:03:33,130 --> 00:03:38,500
+View volume is also called viewing frustum.
+
+59
+00:03:38,500 --> 00:03:41,910
+This is a truncated pyramid,
+
+60
+00:03:41,910 --> 00:03:44,670
+In other words, it looks like a pyramid with its head
+
+61
+00:03:44,670 --> 00:03:47,810
+cut off and laid on its side.
+
+62
+00:03:47,810 --> 00:03:51,500
+Only objects that exist between the near and far plane
+
+63
+00:03:51,500 --> 00:03:54,830
+are projected onto the view plane.
+
+64
+00:03:54,830 --> 00:03:58,860
+Often, the view plane and near clip plane
+
+65
+00:03:58,860 --> 00:04:02,410
+are set to be the same.
+
+66
+00:04:02,410 --> 00:04:04,320
+The viewing direction that the camera faces is perpendicular to the view plane, near plane,
+
+67
+00:04:04,320 --> 00:04:09,250
+and far plane, and the viewing direction
+
+68
+00:04:09,250 --> 00:04:17,440
+vector passes through the center of each plane.
+
+69
+00:04:17,440 --> 00:04:22,060
+Let Pc = (xc, yc, zc)
+
+70
+00:04:22,060 --> 00:04:26,370
+be a point on the top plane of the view volume in view space.
+
+71
+00:04:26,370 --> 00:04:30,020
+Assume that by projecting Pc onto the view plane, we obtain point Ps
+
+72
+00:04:30,020 --> 00:04:36,420
+= (xs, ys, zs).
+
+73
+00:04:36,420 --> 00:04:43,500
+Here zs is equal to d, the distance from the COP to the view plane.
+
+74
+00:04:43,500 --> 00:04:49,690
+ys can be found by the proportional formula for similar triangles.
+
+75
+00:04:49,690 --> 00:04:55,500
+That is, ys/d is equal to yc/dc, so ys = d * (yc/zc).
+
+76
+00:04:55,500 --> 00:05:00,820
+Using a similar process,
+
+77
+00:05:00,820 --> 00:05:05,600
+we can also find the value of xs.
+
+78
+00:05:05,600 --> 00:05:10,100
+Using the xs and ys coordinates obtained previously,
+
+79
+00:05:10,100 --> 00:05:11,250
+let's find
+
+80
+00:05:11,250 --> 00:05:16,330
+the 4x4 matrix of perspective transformation.
+
+81
+00:05:16,330 --> 00:05:19,940
+Matrix T_pers is a matrix
+
+82
+00:05:19,940 --> 00:05:24,030
+that projects view coordinates onto the view plane.
+
+83
+00:05:24,030 --> 00:05:26,800
+The T_pers matrix looks like this.
+
+84
+00:05:26,800 --> 00:05:32,030
+If you look closely, you can see that the bottom row is [0, 0, 1, 0],
+
+85
+00:05:32,030 --> 00:05:36,050
+not [0, 0, 0, 1].
+
+86
+00:05:36,050 --> 00:05:42,570
+Because of this, the w-coordinate of the transformation result is not 1.
+
+87
+00:05:42,570 --> 00:05:45,800
+By dividing the x, y, and z components
+
+88
+00:05:45,800 --> 00:05:49,620
+by the w component of these homogenous coordinates,
+
+89
+00:05:49,620 --> 00:05:56,160
+you can finally obtain a projected result like this.
+
+90
+00:05:56,160 --> 00:05:59,270
+It does not stop at projection,
+
+91
+00:05:59,270 --> 00:06:02,270
+but also performs something called normalization transformation.
+
+92
+00:06:02,270 --> 00:06:05,360
+At this time, the coordinates change
+
+93
+00:06:05,360 --> 00:06:08,050
+from projection space to NDC.
+
+94
+00:06:08,050 --> 00:06:14,660
+In NDC, the 2D (xs, ys) coordinates created by projection are transformed into squares
+
+95
+00:06:14,660 --> 00:06:22,140
+where x and y range from -1 to 1, respectively.
+
+96
+00:06:22,140 --> 00:06:27,140
+In addition, rather than simply fixing the coordinates of zc
+
+97
+00:06:27,140 --> 00:06:29,540
+to d, the original camera
+
+98
+00:06:29,540 --> 00:06:37,040
+coordinates zc are scaled based on d = -1, f = 1.
+
+99
+00:06:37,040 --> 00:06:43,940
+When Large (X,Y) is called the (x,y)
+
+100
+00:06:43,940 --> 00:06:52,040
+normalized coordinates of NDC and h
+
+101
+00:06:52,040 --> 00:06:56,480
+is half the length of one side of the view
+
+102
+00:06:56,480 --> 00:07:01,280
+plane window, (X,Y) can be obtained by a proportional expression like this.
+
+103
+00:07:01,280 --> 00:07:04,850
+The z-coordinate in Canonical form is by squishing zc into the [-1,1] interval.
+
+104
+00:07:04,850 --> 00:07:10,720
+At this time, d = -1, f = 1 are the standards.
+
+105
+00:07:10,720 --> 00:07:15,810
+Let Large Z be the z-coordinate of canonical form.
+
+106
+00:07:15,810 --> 00:07:19,500
+Large Z can be found in this way.
+
+107
+00:07:19,500 --> 00:07:24,080
+To check, insert d and f
+
+108
+00:07:24,080 --> 00:07:28,310
+into zc, and large Z becomes 0 and 1, respectively.
+
+109
+00:07:28,310 --> 00:07:30,690
+So how can this expression be expressed
+
+110
+00:07:30,690 --> 00:07:35,420
+in a 4x4 matrix?
+
+111
+00:07:35,420 --> 00:07:38,960
+Now let's combine all processes
+
+112
+00:07:38,960 --> 00:07:42,400
+including normalization into perspective transformation.
+
+113
+00:07:42,400 --> 00:07:46,660
+Coordinates in canonical form can be expressed as homogeneous
+
+114
+00:07:46,660 --> 00:07:50,300
+coordinates [X, Y, Z, W].
+
+115
+00:07:50,300 --> 00:07:57,540
+And, the perspective transform matrix is like this.
+
+116
+00:07:57,540 --> 00:08:03,450
+The perspective matrix can also be easily defined using GLM.
+
+117
+00:08:03,450 --> 00:08:06,910
+This is done by using the glm::perspective function.
+
+118
+00:08:06,910 --> 00:08:09,700
+The first parameter, fov,
+
+119
+00:08:09,700 --> 00:08:11,950
+is an abbreviation for field of view
+
+120
+00:08:11,950 --> 00:08:14,980
+and indicates the angle of how wide
+
+121
+00:08:14,980 --> 00:08:17,250
+the view can be.
+
+122
+00:08:17,250 --> 00:08:20,040
+fov represents the view volume angle in the y direction
+
+123
+00:08:20,040 --> 00:08:24,100
+as shown in the figure.
+
+124
+00:08:24,100 --> 00:08:30,380
+Aspect ratio refers to the ratio of width/height.
+
+125
+00:08:30,380 --> 00:08:34,430
+near and far represent the distance from the camera
+
+126
+00:08:34,430 --> 00:08:39,490
+to the near plane and far plane.
+
+127
+00:08:39,490 --> 00:08:43,780
+There are many reasons why the canonical form is useful,
+
+128
+00:08:43,780 --> 00:08:47,680
+but the most representative
+
+129
+00:08:47,680 --> 00:08:49,700
+one is that clipping can be easily done
+
+130
+00:08:49,700 --> 00:08:53,820
+using the c anonical form, as shown here.
+
+131
+00:08:53,820 --> 00:08:55,930
+Let's assume a clipping test in the case
+
+132
+00:08:55,930 --> 00:08:59,320
+where it is not normalized.
+
+133
+00:08:59,320 --> 00:09:04,160
+To test whether a point is inside the view frustum,
+
+134
+00:09:04,160 --> 00:09:08,100
+you must perform an in/out test of the point
+
+135
+00:09:08,100 --> 00:09:11,160
+on the planes that form the boundary of the view frustum.
+
+136
+00:09:11,160 --> 00:09:16,770
+Also, in order to find only the in-part of the object that spans in/out, the intersection between the plane
+
+137
+00:09:16,770 --> 00:09:21,930
+and the object must also be found.
+
+138
+00:09:21,930 --> 00:09:26,160
+This calculation is quite complex and time consuming.
+
+139
+00:09:26,160 --> 00:09:30,170
+On the other hand, what about using canonical form?
+
+140
+00:09:30,170 --> 00:09:32,530
+The point in/out test is very simple
+
+141
+00:09:32,530 --> 00:09:38,420
+as it tests whether the x or y coordinate
+
+142
+00:09:38,420 --> 00:09:40,540
+is between -1 and 1.
+
+143
+00:09:40,540 --> 00:09:44,630
+Additionally, intersection calculations become much simpler.
+
+144
+00:09:44,630 --> 00:09:50,040
+As such, there are advantages to using the canonical form.
+
+145
+00:09:50,040 --> 00:09:56,080
+Viewport refers to the rectangle on the screen where the picture is drawn.
+
+146
+00:09:56,080 --> 00:10:00,120
+There are many cases where the entire screen becomes a viewport.
+
+147
+00:10:00,120 --> 00:10:03,520
+We need to convert the (x,y) coordinates of the canonical form to the pixel
+
+148
+00:10:03,520 --> 00:10:07,320
+coordinates of the viewport window.
+
+149
+00:10:07,320 --> 00:10:10,080
+As seen in the previous slide,
+
+150
+00:10:10,080 --> 00:10:12,610
+the (x,y) coordinates of the canonical form
+
+151
+00:10:12,610 --> 00:10:18,010
+are in the range of [-1,1], respectively.
+
+152
+00:10:18,010 --> 00:10:22,210
+This converts from Canonical form
+
+153
+00:10:22,210 --> 00:10:26,620
+(X,Y) to viewport coordinates (Vx, Vy) and so on.
+
+154
+00:10:26,620 --> 00:10:34,750
+If you substitute (-1,-1) into Large (X,Y), you get (x1, y1).
+
+155
+00:10:34,750 --> 00:10:38,850
+Substituting (1, 1) gives (x2, y2).
+
+156
+00:10:38,850 --> 00:10:42,690
+We will omit the detailed explanation of the equation.

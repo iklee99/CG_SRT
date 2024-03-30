@@ -1,0 +1,787 @@
+﻿1
+00:00:00,000 --> 00:00:05,700
+In this note, we learn more about the implementation of view transformation,
+
+2
+00:00:05,700 --> 00:00:10,270
+which converts world space to view space.
+
+3
+00:00:10,270 --> 00:00:13,430
+Through this process, you can see how
+
+4
+00:00:13,430 --> 00:00:17,530
+the glm::lookAt function is implemented.
+
+5
+00:00:17,530 --> 00:00:22,050
+Cameras play an important role in computer graphics.
+
+6
+00:00:22,050 --> 00:00:26,420
+Even if the same objects are fixed in the 3D world,
+
+7
+00:00:26,420 --> 00:00:29,660
+the final ouput image will vary
+
+8
+00:00:29,660 --> 00:00:32,940
+depending on how you look at the objects.
+
+9
+00:00:32,940 --> 00:00:35,950
+This is similar to how when taking a picture of a person,
+
+10
+00:00:35,950 --> 00:00:39,640
+depending on the position and direction of the camera,
+
+11
+00:00:39,640 --> 00:00:41,470
+the picture taken will be different
+
+12
+00:00:41,470 --> 00:00:45,490
+even if the same person is taken.
+
+13
+00:00:45,490 --> 00:00:48,060
+The picture shows the game
+
+14
+00:00:48,060 --> 00:00:52,220
+view and working view of the Unity game engine.
+
+15
+00:00:52,220 --> 00:00:55,170
+The cameras used for these two views
+
+16
+00:00:55,170 --> 00:00:57,630
+are different.
+
+17
+00:00:57,630 --> 00:01:01,010
+Depending on where you place the white camera
+
+18
+00:01:01,010 --> 00:01:05,600
+in the working view
+
+19
+00:01:05,600 --> 00:01:09,360
+and where you point it, the actual game scene
+
+20
+00:01:09,360 --> 00:01:10,820
+shown in the upper game view will vary.
+
+21
+00:01:10,820 --> 00:01:14,880
+The direction of the white camera icon in the working view
+
+22
+00:01:14,880 --> 00:01:18,040
+is not the direction the actual camera is facing.
+
+23
+00:01:18,040 --> 00:01:22,550
+However, it is displayed that way
+
+24
+00:01:22,550 --> 00:01:24,860
+because the camera icon is fixed in that direction.
+
+25
+00:01:24,860 --> 00:01:29,540
+Here the camera is looking towards the two spheres,
+
+26
+00:01:29,540 --> 00:01:35,100
+allowing us to see the game view in the upper window.
+
+27
+00:01:35,100 --> 00:01:37,520
+As previously mentioned, the camera
+
+28
+00:01:37,520 --> 00:01:41,330
+in OpenGL is always positioned
+
+29
+00:01:41,330 --> 00:01:43,820
+at the origin and facing the -z direction.
+
+30
+00:01:43,820 --> 00:01:47,990
+We cannot change this location and direction.
+
+31
+00:01:47,990 --> 00:01:51,840
+So how do you move the camera to the desired location and direction
+
+32
+00:01:51,840 --> 00:01:56,860
+so that you can see the view you want?
+
+33
+00:01:56,860 --> 00:02:00,760
+It simulates the motion of the camera.
+
+34
+00:02:00,760 --> 00:02:05,130
+In other words, it makes the object in the current view
+
+35
+00:02:05,130 --> 00:02:07,370
+feel like the camera is moving by
+
+36
+00:02:07,370 --> 00:02:11,310
+moving it in the opposite direction of the camera motion.
+
+37
+00:02:11,310 --> 00:02:15,360
+This is similar to creating a train interior set during a movie
+
+38
+00:02:15,360 --> 00:02:18,880
+shoot and moving the trees outside the window
+
+39
+00:02:18,880 --> 00:02:22,580
+to give the impression that the train is moving.
+
+40
+00:02:22,580 --> 00:02:25,860
+In other words, the idea is to place objects
+
+41
+00:02:25,860 --> 00:02:32,030
+instead of placing the camera.
+
+42
+00:02:32,030 --> 00:02:34,500
+To define camera space,
+
+43
+00:02:34,500 --> 00:02:36,490
+various camera parameters are defined
+
+44
+00:02:36,490 --> 00:02:39,200
+in world space.
+
+45
+00:02:39,200 --> 00:02:42,950
+The world coordinate system we are familiar with has as its basis
+
+46
+00:02:42,950 --> 00:02:47,260
+the x, y, and z axes that are perpendicular to each other,
+
+47
+00:02:47,260 --> 00:02:49,390
+and is a right-handed coordinate system.
+
+48
+00:02:49,390 --> 00:02:52,910
+That is, the positive direction of the z-axis
+
+49
+00:02:52,910 --> 00:02:55,620
+is pointing toward us from the screen.
+
+50
+00:02:55,620 --> 00:02:57,430
+To define a Camera,
+
+51
+00:02:57,430 --> 00:03:01,120
+several important parameters are defined.
+
+52
+00:03:01,120 --> 00:03:04,570
+P is the location of the camera
+
+53
+00:03:04,570 --> 00:03:07,780
+and is called Center Of Projection, or COP for short.
+
+54
+00:03:07,780 --> 00:03:12,420
+A represents the target point
+
+55
+00:03:12,420 --> 00:03:16,090
+the camera is looking at, here we will call it “at point”.
+
+56
+00:03:16,090 --> 00:03:18,210
+V is the up vector,
+
+57
+00:03:18,210 --> 00:03:21,890
+which is a vector that represents the direction above
+
+58
+00:03:21,890 --> 00:03:23,940
+the camera's head, as shown in the picture.
+
+59
+00:03:23,940 --> 00:03:26,860
+Now, let’s define the view (camera, eye) coordinate system
+
+60
+00:03:26,860 --> 00:03:33,570
+using the above parameters.
+
+61
+00:03:33,570 --> 00:03:38,560
+We will find the three axes of this coordinate system, UVN.
+
+62
+00:03:38,560 --> 00:03:42,010
+U is the right axis vector of the camera,
+
+63
+00:03:42,010 --> 00:03:45,790
+which corresponds to the x-axis in a general coordinate system.
+
+64
+00:03:45,790 --> 00:03:49,120
+As defined earlier, V is an axis vector
+
+65
+00:03:49,120 --> 00:03:52,730
+representing the upward direction of the camera, that is, the y direction.
+
+66
+00:03:52,730 --> 00:03:57,440
+Lastly, N represents the axis in the direction the camera is facing,
+
+67
+00:03:57,440 --> 00:04:01,240
+which corresponds to the +z axis of a general coordinate system.
+
+68
+00:04:01,240 --> 00:04:06,220
+The N vector becomes a vector going from P to A.
+
+69
+00:04:06,220 --> 00:04:10,990
+Also, N is equal to the normal vector of the view plane.
+
+70
+00:04:10,990 --> 00:04:17,580
+However, in the picture, the +N direction is opposite to world space,
+
+71
+00:04:17,580 --> 00:04:22,520
+and the +N direction is toward the inside of the screen from us.
+
+72
+00:04:22,520 --> 00:04:24,920
+In other words, the view coordinate system
+
+73
+00:04:24,920 --> 00:04:27,600
+can be said to be a left-handed coordinate system.
+
+74
+00:04:27,600 --> 00:04:33,220
+Based on this definition of UVN,
+
+75
+00:04:33,220 --> 00:04:36,640
+we will look at how to obtain the actual UVN in the next slide.
+
+76
+00:04:36,640 --> 00:04:41,130
+Now let's look at how to calculate UVN axes
+
+77
+00:04:41,130 --> 00:04:45,040
+from given camera parameters P, A, and V.
+
+78
+00:04:45,040 --> 00:04:47,710
+First, let's assume that
+
+79
+00:04:47,710 --> 00:04:51,960
+instead of up vector V, virtual up
+
+80
+00:04:51,960 --> 00:04:54,010
+vector v' is given as a parameter.
+
+81
+00:04:54,010 --> 00:04:57,650
+v' is not an exact V direction vector,
+
+82
+00:04:57,650 --> 00:05:02,310
+but an approximate vector representing the approximate up direction.
+
+83
+00:05:02,310 --> 00:05:06,930
+In fact, the direction vector from P to A is N, and N
+
+84
+00:05:06,930 --> 00:05:09,890
+and V must be perpendicular to each other.
+
+85
+00:05:09,890 --> 00:05:13,580
+However, it is not easy for the user to calculate these vectors
+
+86
+00:05:13,580 --> 00:05:17,860
+directly and input them as camera parameters.
+
+87
+00:05:17,860 --> 00:05:21,040
+Therefore, give a roughly similar v' and have the program
+
+88
+00:05:21,040 --> 00:05:26,110
+calculate the exact V.
+
+89
+00:05:26,110 --> 00:05:28,770
+In many cases, the y-axis (0, 1,
+
+90
+00:05:28,770 --> 00:05:32,800
+0) of world space is used as v'.
+
+91
+00:05:32,800 --> 00:05:36,350
+Of course, if you are holding the camera upside down,
+
+92
+00:05:36,350 --> 00:05:39,650
+the -y axis may be better.
+
+93
+00:05:39,650 --> 00:05:42,300
+Calculating N is the easiest.
+
+94
+00:05:42,300 --> 00:05:47,580
+If the vector A – P going from P to A is small
+
+95
+00:05:47,580 --> 00:05:53,550
+n, normalizing n becomes N.
+
+96
+00:05:53,550 --> 00:05:57,150
+The U vector is perpendicular to both V and N.
+
+97
+00:05:57,150 --> 00:06:02,510
+We cross product n and v' to find small u,
+
+98
+00:06:02,510 --> 00:06:05,930
+and normalize it to find U.
+
+99
+00:06:05,930 --> 00:06:09,680
+If you look closely, you can find something strange.
+
+100
+00:06:09,680 --> 00:06:13,180
+Since it is a UVN coordinate system,
+
+101
+00:06:13,180 --> 00:06:17,370
+you may be thinking that to find U,
+
+102
+00:06:17,370 --> 00:06:19,730
+you need to do V x N, not N x V.
+
+103
+00:06:19,730 --> 00:06:23,310
+But that is the case in right-handed coordinate system.
+
+104
+00:06:23,310 --> 00:06:29,240
+As seen earlier, camera space UVN is a left-handed coordinate system,
+
+105
+00:06:29,240 --> 00:06:31,420
+so U was obtained by calculating N x V,
+
+106
+00:06:31,420 --> 00:06:35,940
+which is the opposite direction of V x N.
+
+107
+00:06:35,940 --> 00:06:38,860
+Now that N and U are determined,
+
+108
+00:06:38,860 --> 00:06:41,920
+we can find the exact V.
+
+109
+00:06:41,920 --> 00:06:45,020
+If you calculate v by doing
+
+110
+00:06:45,020 --> 00:06:50,660
+u x n and normalize it, you get V.
+
+111
+00:06:50,660 --> 00:06:55,020
+As above, since the cross product is calculated in the opposite direction to the
+
+112
+00:06:55,020 --> 00:06:57,660
+right-handed coordinate system, u x n is calculated rather than n x u.
+
+113
+00:06:57,660 --> 00:07:03,040
+Once the UVN axis of the view space
+
+114
+00:07:03,040 --> 00:07:06,400
+has been determined, coordinate conversion from world space to view
+
+115
+00:07:06,400 --> 00:07:11,430
+space is possible.
+
+116
+00:07:11,430 --> 00:07:14,050
+Now we can determine the view
+
+117
+00:07:14,050 --> 00:07:18,290
+matrix mentioned in the previous note
+
+118
+00:07:18,290 --> 00:07:21,750
+05_1_Transformation Pipeline.
+
+119
+00:07:21,750 --> 00:07:26,210
+First, U, V, and N were obtained using the method described previously.
+
+120
+00:07:26,210 --> 00:07:29,730
+Additionally, the coordinates of COP P are given.
+
+121
+00:07:29,730 --> 00:07:33,670
+At this time, all coordinates of P and UVN are expressed
+
+122
+00:07:33,670 --> 00:07:37,020
+based on world space.
+
+123
+00:07:37,020 --> 00:07:41,150
+Also, all UVNs are unit vectors.
+
+124
+00:07:41,150 --> 00:07:44,620
+According to the previously studied change-of-frame, the transformation T_cw,
+
+125
+00:07:44,620 --> 00:07:48,900
+which converts from view coordinates to world coordinates,
+
+126
+00:07:48,900 --> 00:07:53,410
+is given like this.
+
+127
+00:07:53,410 --> 00:08:01,550
+T_cw = T_p R, which is a general “rotation-before-translation”
+
+128
+00:08:01,550 --> 00:08:04,180
+type matrix that places UVN vectors
+
+129
+00:08:04,180 --> 00:08:10,840
+and coordinates of P in each column of the matrix.
+
+130
+00:08:10,840 --> 00:08:18,880
+Since our original goal was "world to view space",
+
+131
+00:08:18,880 --> 00:08:26,380
+which is the opposite direction to the above,
+
+132
+00:08:26,380 --> 00:08:31,090
+the T_wc matrix can be obtained by finding the inverse of T_cw like this.
+
+133
+00:08:31,090 --> 00:08:33,300
+This can be easily understood by remembering that the inverse of a rotation
+
+134
+00:08:33,300 --> 00:08:37,200
+matrix is the same as the transpose of that matrix, and the inverse of a translation
+
+135
+00:08:37,200 --> 00:08:41,180
+matrix is simply to reverse the direction of the vector.
+
+136
+00:08:41,180 --> 00:08:45,150
+Let's look at a real-life example of the process described above.
+
+137
+00:08:45,150 --> 00:08:48,870
+To simplify calculations, COP, P, is expressed as world coordinates
+
+138
+00:08:48,870 --> 00:08:52,190
+(0, 0, 5).
+
+139
+00:08:52,190 --> 00:08:54,830
+That is, it is on the +z axis,
+
+140
+00:08:54,830 --> 00:08:58,850
+and the camera is currently looking at the origin of world space.
+
+141
+00:08:58,850 --> 00:09:04,040
+That is, let's assume A = (0, 0, 0).
+
+142
+00:09:04,040 --> 00:09:09,310
+Also, let's assume that the up vector is just the same as the y-axis.
+
+143
+00:09:09,310 --> 00:09:11,940
+Please refer to the picture.
+
+144
+00:09:11,940 --> 00:09:17,560
+First, n = A - P, so N = (0, 0, -1),
+
+145
+00:09:17,560 --> 00:09:23,170
+In other words, it becomes the -z axis of the world.
+
+146
+00:09:23,170 --> 00:09:29,620
+Since u = n x v', U = (1, 0, 0), i.e.
+
+147
+00:09:29,620 --> 00:09:33,440
+equal to the x-axis of the world.
+
+148
+00:09:33,440 --> 00:09:39,660
+Finally, if we calculate v = u x n, v
+
+149
+00:09:39,660 --> 00:09:46,430
+becomes the y-axis of the world, as we first assumed.
+
+150
+00:09:46,430 --> 00:09:51,890
+Now let's convert a point Q_w = (3,
+
+151
+00:09:51,890 --> 00:09:54,890
+3, -1) in world space into view coordinates.
+
+152
+00:09:54,890 --> 00:09:56,980
+As derived from the previous slide, view
+
+153
+00:09:56,980 --> 00:09:59,950
+coordinates Q_c are equal to the product of T_wc
+
+154
+00:09:59,950 --> 00:10:04,130
+matrix and Q_w.
+
+155
+00:10:04,130 --> 00:10:07,600
+I'm sure you can all remember this formula.
+
+156
+00:10:07,600 --> 00:10:12,990
+If you input the UVN and P coordinates calculated in the previous chapter here,
+
+157
+00:10:12,990 --> 00:10:16,830
+Q_c will be (3, 3, 6, 1).
+
+158
+00:10:16,830 --> 00:10:21,890
+In fact, this coordinate transformation can be done intuitively
+
+159
+00:10:21,890 --> 00:10:26,100
+without any calculations.
+
+160
+00:10:26,100 --> 00:10:28,630
+Since the Camera is at (0, 0, 5) on the world +z axis and facing the origin,
+
+161
+00:10:28,630 --> 00:10:34,090
+the z coordinate -1 of Q_w will be 6 in Q_c.
+
+162
+00:10:34,090 --> 00:10:38,470
+It will also be easy to understand
+
+163
+00:10:38,470 --> 00:10:43,080
+that the remaining U and V remain unchanged at 3.
+
+164
+00:10:43,080 --> 00:10:49,330
+In this example, we slightly changed the coordinates of COP to (1, -1, 5).
+
+165
+00:10:49,330 --> 00:10:52,400
+This will slightly distort the view
+
+166
+00:10:52,400 --> 00:10:55,590
+space and change the N, U, and V axes.
+
+167
+00:10:55,590 --> 00:11:00,130
+The calculation method is the same as before.
+
+168
+00:11:00,130 --> 00:11:03,410
+The function that calculates the transformation
+
+169
+00:11:03,410 --> 00:11:06,620
+matrix that converts from world to view space through
+
+170
+00:11:06,620 --> 00:11:09,710
+this process is glm::lookAt.
+
+171
+00:11:09,710 --> 00:11:13,220
+Parameters are given as COP (P), target
+
+172
+00:11:13,220 --> 00:11:19,660
+(A), and virtual_up_vector (v').
+
+173
+00:11:19,660 --> 00:11:24,280
+This program does not “model transform” the cube,
+
+174
+00:11:24,280 --> 00:11:27,740
+but moves the camera position along a circular pass
+
+175
+00:11:27,740 --> 00:11:30,650
+surrounding the cube,
+
+176
+00:11:30,650 --> 00:11:34,450
+making it appear as if the cube is spinning.
+
+177
+00:11:34,450 --> 00:11:37,170
+The camera always views the origin,
+
+178
+00:11:37,170 --> 00:11:39,290
+which is the center of the cube, as its target.
+
+179
+00:11:39,290 --> 00:11:41,010
+We use the glm::lookAt function in this program.
+
+180
+00:11:41,010 --> 00:11:44,780
+Projection matrix is set in main().
+
+181
+00:11:44,780 --> 00:11:48,750
+Since the projection matrix does not change
+
+182
+00:11:48,750 --> 00:11:52,970
+during program execution,
+
+183
+00:11:52,970 --> 00:11:56,690
+you only need to set it once in main.
+
+184
+00:11:56,690 --> 00:12:00,300
+The model matrix is left as identity,
+
+185
+00:12:00,300 --> 00:12:03,660
+so there is no change in the cube.
+
+186
+00:12:03,660 --> 00:12:06,680
+COP, the position of the camera,
+
+187
+00:12:06,680 --> 00:12:11,820
+moves along an orbit parallel to the xz plane over time.
+
+188
+00:12:11,820 --> 00:12:14,980
+The radius of the circular orbit is 5.
+
+189
+00:12:14,980 --> 00:12:18,570
+The coordinates of COP given to the glm::lookAt function
+
+190
+00:12:18,570 --> 00:12:23,030
+are given as (camX, 1.5, camZ).
+
+191
+00:12:23,030 --> 00:12:26,840
+That is, the camera is slightly floating in the y direction,
+
+192
+00:12:26,840 --> 00:12:30,670
+parallel to the xz plane.
+
+193
+00:12:30,670 --> 00:12:33,510
+The camera's lens is tilted slightly downward,
+
+194
+00:12:33,510 --> 00:12:35,700
+looking toward the origin.
+
+195
+00:12:35,700 --> 00:12:39,420
+That is, at point A is given as the origin.
+
+196
+00:12:39,420 --> 00:12:44,970
+The virtual up vector, v', is given as the y-axis of the world,
+
+197
+00:12:44,970 --> 00:12:51,340
+allowing glm::lookAt to calculate the correct V vector.
