@@ -1,0 +1,415 @@
+﻿1
+00:00:00,000 --> 00:00:03,290
+This is a Texture Examples lecture
+
+2
+00:00:03,290 --> 00:00:06,660
+In the Texture2 program, the texture image is displayed
+
+3
+00:00:06,660 --> 00:00:09,600
+mapped to one square
+
+4
+00:00:09,600 --> 00:00:13,180
+Each time you press the space bar,
+
+5
+00:00:13,180 --> 00:00:18,190
+the texture mode changes to 1, 2, 3, 0, 1, 2, 3,
+
+6
+00:00:18,190 --> 00:00:21,050
+0, … It changes repeatedly as follows
+
+7
+00:00:21,050 --> 00:00:24,510
+Different texture mapping is applied each time
+
+8
+00:00:24,510 --> 00:00:29,510
+This part shows three arrays containing vertex coordinates,
+
+9
+00:00:29,510 --> 00:00:34,510
+vertex color, and texture
+
+10
+00:00:34,510 --> 00:00:39,510
+coordinates data for rectangle data used in the program
+
+11
+00:00:39,510 --> 00:00:42,430
+The genRectangle function fills the VBO
+
+12
+00:00:42,430 --> 00:00:45,820
+with three attributes: vertex position,
+
+13
+00:00:45,820 --> 00:00:49,300
+color, and texture coordinates
+
+14
+00:00:49,300 --> 00:00:52,730
+Similar to cube,
+
+15
+00:00:52,730 --> 00:00:55,270
+each data was copied to VBO
+
+16
+00:00:55,270 --> 00:00:59,360
+using glBufferData and glBufferSubData
+
+17
+00:00:59,360 --> 00:01:02,070
+Before drawing an object using a texture, bind
+
+18
+00:01:02,070 --> 00:01:05,990
+the desired texture
+
+19
+00:01:05,990 --> 00:01:09,870
+When texCoordState is mode 0,
+
+20
+00:01:09,870 --> 00:01:13,010
+the four vertices of the square have normal texture
+
+21
+00:01:13,010 --> 00:01:17,100
+coordinates of 0 and 1
+
+22
+00:01:17,100 --> 00:01:20,250
+Texture mapping is done so that the entire image fits
+
+23
+00:01:20,250 --> 00:01:22,840
+perfectly into a square
+
+24
+00:01:22,840 --> 00:01:25,050
+We called the genRectangle() function again
+
+25
+00:01:25,050 --> 00:01:27,890
+to change the texture
+
+26
+00:01:27,890 --> 00:01:31,380
+coordinates and overwrite them in the VBO
+
+27
+00:01:31,380 --> 00:01:35,670
+However, since only the texture coordinates have changed,
+
+28
+00:01:35,670 --> 00:01:39,540
+there is no need to run genRectangle() in its entirety
+
+29
+00:01:39,540 --> 00:01:41,830
+Just rewrite the part that uses texture
+
+30
+00:01:41,830 --> 00:01:46,780
+coordinates as glBufferSubData
+
+31
+00:01:46,780 --> 00:01:50,930
+In mode 1, the texture coordinates of the rectangular vertices were specified
+
+32
+00:01:50,930 --> 00:01:55,240
+as shown in the picture
+
+33
+00:01:55,240 --> 00:01:57,670
+Only 1/4 of the texture image
+
+34
+00:01:57,670 --> 00:02:01,540
+is mapped and drawn in the rectangle
+
+35
+00:02:01,540 --> 00:02:06,060
+In mode 2, the texture
+
+36
+00:02:06,060 --> 00:02:13,210
+coordinates of the rectangular vertices were designated as (-1,0),
+
+37
+00:02:13,210 --> 00:02:15,420
+(2,0), (2,1), (-1,1) as shown in the picture
+
+38
+00:02:15,420 --> 00:02:19,060
+The y-direction is normal between [0,1],
+
+39
+00:02:19,060 --> 00:02:26,280
+but the x-direction has no fixed texture in the [-1,0]
+
+40
+00:02:26,280 --> 00:02:31,760
+and [1,2] parts, so wrapping must be used
+
+41
+00:02:31,760 --> 00:02:41,760
+The image is reduced by 1/3 in width and placed in the center
+
+42
+00:02:41,760 --> 00:02:43,620
+This is because the texture image must be mapped to the area
+
+43
+00:02:43,620 --> 00:02:48,480
+where texture coordinates are [0,1]
+
+44
+00:02:48,480 --> 00:02:51,340
+The remaining left and bottom parts
+
+45
+00:02:51,340 --> 00:02:53,620
+repeat the original image
+
+46
+00:02:53,620 --> 00:02:55,940
+because the wrapping option
+
+47
+00:02:55,940 --> 00:02:59,340
+in the s direction is set to GL_REPEAT
+
+48
+00:02:59,340 --> 00:03:02,070
+In mode 3, the range of texture coordinates
+
+49
+00:03:02,070 --> 00:03:04,970
+in both horizontal and vertical directions
+
+50
+00:03:04,970 --> 00:03:08,440
+is given between [-1,2]
+
+51
+00:03:08,440 --> 00:03:11,220
+Therefore, normal teture mapping is performed only on the horizontal
+
+52
+00:03:11,220 --> 00:03:17,350
+and vertical [0,1] x [0,1] portion,
+
+53
+00:03:17,350 --> 00:03:23,050
+and all remaining portions are determined by the wrapping option
+
+54
+00:03:23,050 --> 00:03:25,740
+As confirmed on the previous page,
+
+55
+00:03:25,740 --> 00:03:31,020
+both wrapping options in the s and t directions are GL_REPEAT,
+
+56
+00:03:31,020 --> 00:03:35,620
+so the result is as shown in the picture
+
+57
+00:03:35,620 --> 00:03:39,110
+The MultiTexture program is a program that maps
+
+58
+00:03:39,110 --> 00:03:43,600
+two texture maps to the same location at the same time
+
+59
+00:03:43,600 --> 00:03:48,200
+We created texture1 and texture2 objects
+
+60
+00:03:48,200 --> 00:03:52,470
+by loading two texture images
+
+61
+00:03:52,470 --> 00:03:57,830
+“container.bmp” and “awesomeface.bmp” respectively
+
+62
+00:03:57,830 --> 00:04:00,380
+After loading the two textures,
+
+63
+00:04:00,380 --> 00:04:04,050
+they were referred to as 0 and 1
+
+64
+00:04:04,050 --> 00:04:07,430
+respectively and passed through the fragment shader
+
+65
+00:04:07,430 --> 00:04:11,470
+This number is called a “texture unit”
+
+66
+00:04:11,470 --> 00:04:13,800
+The names of the uniform
+
+67
+00:04:13,800 --> 00:04:17,880
+variables that receive each texture
+
+68
+00:04:17,880 --> 00:04:19,940
+within the fragment shader
+
+69
+00:04:19,940 --> 00:04:25,100
+are texture1 and texture2, respectively
+
+70
+00:04:25,100 --> 00:04:26,920
+Texture units passed by the application program
+
+71
+00:04:26,920 --> 00:04:28,710
+are received as uniform
+
+72
+00:04:28,710 --> 00:04:34,570
+sampler2D variables within the fragment shader
+
+73
+00:04:34,570 --> 00:04:36,970
+Using the utility function
+
+74
+00:04:36,970 --> 00:04:39,670
+"mix", the colors of texture1
+
+75
+00:04:39,670 --> 00:04:43,870
+and texture2 are mixed at a ratio of 0.8:0.2
+
+76
+00:04:43,870 --> 00:04:47,870
+and the final color, FragColor, is calculated
+
+77
+00:04:47,870 --> 00:04:53,070
+Before drawing, the texture to be used must be bound
+
+78
+00:04:53,070 --> 00:04:56,970
+In this example, two textures must be used,
+
+79
+00:04:56,970 --> 00:04:59,470
+so both must be bided
+
+80
+00:04:59,470 --> 00:05:03,140
+So, first activate one texture unit
+
+81
+00:05:03,140 --> 00:05:06,820
+with glActiveTexture(),
+
+82
+00:05:06,820 --> 00:05:09,390
+bind that texture, and then proceed
+
+83
+00:05:09,390 --> 00:05:11,960
+to the next one
+
+84
+00:05:11,960 --> 00:05:16,930
+The constants used in glActiveTexture,
+
+85
+00:05:16,930 --> 00:05:21,080
+GL_TEXTURE0, GL_TEXTURE1,
+
+86
+00:05:21,080 --> 00:05:25,150
+..., can be considered to represent texture units 0, 1, 2, ...
+
+87
+00:05:25,150 --> 00:05:28,480
+in that order, respectively
+
+88
+00:05:28,480 --> 00:05:31,430
+The OpenGL specification
+
+89
+00:05:31,430 --> 00:05:35,500
+requires support of at least 16 texture units
+
+90
+00:05:38,540 --> 00:05:40,980
+Texture unit constants have continuous values,
+
+91
+00:05:40,980 --> 00:05:43,400
+so they can be specified through
+
+92
+00:05:43,400 --> 00:05:46,940
+simple operations
+
+93
+00:05:46,940 --> 00:05:49,770
+For example, GL_TEXTURE8 is equivalent to (GL_TEXTURE0
+
+94
+00:05:49,770 --> 00:05:53,380
++ 8)
+
+95
+00:05:53,380 --> 00:05:57,000
+Using this property, it becomes possible to bind textures
+
+96
+00:05:57,000 --> 00:06:01,190
+using a loop
+
+97
+00:06:01,190 --> 00:06:04,840
+The ColorTexture program is a program
+
+98
+00:06:04,840 --> 00:06:07,340
+that renders by simultaneously utilizing vertex
+
+99
+00:06:07,340 --> 00:06:09,030
+color and texture mapping
+
+100
+00:06:09,030 --> 00:06:12,870
+In this program, we tell the fragment shader
+
+101
+00:06:12,870 --> 00:06:16,550
+to calculate the final color
+
+102
+00:06:16,550 --> 00:06:19,580
+by multiplying the given vertex color by the texture color
+
+103
+00:06:19,580 --> 00:06:24,280
+Since all color values are in the [0,1] range,
+
+104
+00:06:24,280 --> 00:06:29,010
+the value multiplied by them also exists in the [0, 1] range

@@ -1,0 +1,1211 @@
+﻿1
+00:00:00,000 --> 00:00:04,310
+Let's start the texture mapping lecture
+
+2
+00:00:04,310 --> 00:00:06,530
+Let's try to express realism step by step in
+
+3
+00:00:06,530 --> 00:00:09,690
+drawing CG scenes
+
+4
+00:00:09,690 --> 00:00:14,000
+In the first picture, the geometry of the objects that appear
+
+5
+00:00:14,000 --> 00:00:19,420
+In other words, it only uses shapes, so it is not very realistic
+
+6
+00:00:19,420 --> 00:00:22,750
+The next one uses Phong shading,
+
+7
+00:00:22,750 --> 00:00:25,080
+but it's still missing something
+
+8
+00:00:25,080 --> 00:00:28,160
+The last one uses shading and texture maps together,
+
+9
+00:00:28,160 --> 00:00:34,380
+and looks much more realistic
+
+10
+00:00:34,380 --> 00:00:36,650
+Texture mapping adds
+
+11
+00:00:36,650 --> 00:00:40,190
+realistic details to CG scenes
+
+12
+00:00:40,190 --> 00:00:45,700
+Rendering is done by wrapping an object in a detailed 2D image
+
+13
+00:00:45,700 --> 00:00:50,900
+If all of these details were to be implemented through modeling alone,
+
+14
+00:00:50,900 --> 00:00:55,500
+a large number of vertices and faces would be needed,
+
+15
+00:00:55,500 --> 00:00:58,530
+making it very difficult and complicated
+
+16
+00:00:58,530 --> 00:01:02,870
+Texture mapping provides a much more efficient method
+
+17
+00:01:02,870 --> 00:01:07,870
+Texture mapping was published as part of the doctoral thesis of Edwin Catmull,
+
+18
+00:01:07,870 --> 00:01:13,250
+who graduated from the University of Utah in 1974
+
+19
+00:01:13,250 --> 00:01:18,110
+He is a co-founder of the famous animation production company Pixar
+
+20
+00:01:18,110 --> 00:01:22,930
+and serves as CEO of Walt Disney Animation Studio
+
+21
+00:01:22,930 --> 00:01:28,320
+He won the ACM Turing Award in 2019
+
+22
+00:01:28,320 --> 00:01:30,300
+In addition to texture-mapping, he is a pioneer
+
+23
+00:01:30,300 --> 00:01:34,690
+who invented many important technologies
+
+24
+00:01:34,690 --> 00:01:38,760
+essential to current CG,
+
+25
+00:01:38,760 --> 00:01:40,790
+such as bicubic surface,
+
+26
+00:01:40,790 --> 00:01:45,450
+spatial anti-aliasing, subdivision surface, and z-buffering
+
+27
+00:01:45,450 --> 00:01:47,530
+Texture mapping technology was further developed by Catmull's successors,
+
+28
+00:01:47,530 --> 00:01:53,990
+Blinn and Newell
+
+29
+00:01:53,990 --> 00:01:59,090
+Let me first explain the term texture coordinates
+
+30
+00:01:59,090 --> 00:02:01,510
+These coordinates are used to specify the position
+
+31
+00:02:01,510 --> 00:02:04,370
+on the texture image
+
+32
+00:02:04,370 --> 00:02:08,380
+Typically denoted as (u,v) or (s,t)
+
+33
+00:02:08,380 --> 00:02:12,500
+Also, both the horizontal and vertical axes
+
+34
+00:02:12,500 --> 00:02:14,690
+have values between 0 and 1
+
+35
+00:02:14,690 --> 00:02:20,060
+Let’s take a look at the role texture coordinates play
+
+36
+00:02:20,060 --> 00:02:25,020
+Here is a texture image in the shape of an electronic circuit board
+
+37
+00:02:25,020 --> 00:02:30,750
+This texture image has texture coordinates specified
+
+38
+00:02:30,750 --> 00:02:32,800
+Let's assume that we have a simple mesh
+
+39
+00:02:32,800 --> 00:02:36,990
+that will be the source of texture mapping
+
+40
+00:02:36,990 --> 00:02:41,980
+The shape of this mesh is not rectangular but slightly distorted
+
+41
+00:02:41,980 --> 00:02:46,840
+Now, let's give texture coordinates to the four vertices
+
+42
+00:02:46,840 --> 00:02:51,540
+so that the texture image is mapped to the mesh
+
+43
+00:02:51,540 --> 00:02:54,980
+First, in the first method, texture coordinates (0,0),
+
+44
+00:02:54,980 --> 00:03:02,450
+(1,0), (1,1), (0,1) were given to the four vertices
+
+45
+00:03:02,450 --> 00:03:08,420
+In this way, the entire area of the texture image is mapped to the mesh
+
+46
+00:03:08,420 --> 00:03:13,030
+Because the mesh is distorted, the image is also distorted
+
+47
+00:03:13,030 --> 00:03:16,620
+and looks a little different from the original texture
+
+48
+00:03:16,620 --> 00:03:20,670
+In the second method, I changed the texture
+
+49
+00:03:20,670 --> 00:03:24,160
+coordinates to use only part of the texture image
+
+50
+00:03:24,160 --> 00:03:32,890
+That is, instead of (1,0) and (1,1), we gave (0.9, 0.4) and (1, 0.7)
+
+51
+00:03:32,890 --> 00:03:36,200
+Although the entire texture image has not been mapped,
+
+52
+00:03:36,200 --> 00:03:40,610
+you can see that distortion is prevented
+
+53
+00:03:40,610 --> 00:03:43,160
+Texture coordinates can be used to specify which
+
+54
+00:03:43,160 --> 00:03:47,390
+part of the texture image should be mapped to
+
+55
+00:03:47,390 --> 00:03:50,720
+an object like this
+
+56
+00:03:50,720 --> 00:03:53,250
+Texture coordinates typically range from (0,0)
+
+57
+00:03:53,250 --> 00:03:57,190
+to (1,1)
+
+58
+00:03:57,190 --> 00:04:02,940
+What happens if texture coordinates exceed this range?
+
+59
+00:04:02,940 --> 00:04:08,350
+OpenGL's default handles these cases with the GL_REPEAT option
+
+60
+00:04:08,350 --> 00:04:13,600
+In other words, the same texture image is repeated over and over again
+
+61
+00:04:13,600 --> 00:04:16,860
+This is the case on the far left of the picture
+
+62
+00:04:16,860 --> 00:04:20,670
+GL_MIRROERED_REPEAT repeats, but changes
+
+63
+00:04:20,670 --> 00:04:23,300
+direction at the boundary line
+
+64
+00:04:23,300 --> 00:04:26,550
+so that it is reflected in a mirror
+
+65
+00:04:26,550 --> 00:04:29,990
+GL_CLAMP_TO_EDGE continues to repeat only the pixels
+
+66
+00:04:29,990 --> 00:04:35,380
+at the border of the texture image
+
+67
+00:04:35,380 --> 00:04:39,340
+GL_CLAMP_TO_BORDER repeats the specific color
+
+68
+00:04:39,340 --> 00:04:42,710
+set as the border color
+
+69
+00:04:42,710 --> 00:04:44,900
+The rightmost part of the picture
+
+70
+00:04:44,900 --> 00:04:49,920
+shows a case where a dark green border color is used
+
+71
+00:04:49,920 --> 00:04:54,960
+In many cases, the two axis directions of texture coordinates
+
+72
+00:04:54,960 --> 00:04:57,620
+are denoted as s and t
+
+73
+00:04:57,620 --> 00:05:02,160
+s represents the horizontal axis and t represents the vertical axis
+
+74
+00:05:02,160 --> 00:05:07,290
+The method of wrapping the texture is specified
+
+75
+00:05:07,290 --> 00:05:12,210
+using GL_TEXTURE_WRAP_S or GL_TEXTURE_WRAP_T
+
+76
+00:05:12,210 --> 00:05:15,000
+of the glTexParameteri function
+
+77
+00:05:15,000 --> 00:05:22,040
+In this example, both the S and T directions are set to GL_MIRROERED_REPEAT
+
+78
+00:05:22,040 --> 00:05:25,530
+You can also specify the border
+
+79
+00:05:25,530 --> 00:05:29,430
+color of the texture using glTexParameterfv
+
+80
+00:05:29,430 --> 00:05:34,230
+The i attached to the end of glTexParameter
+
+81
+00:05:34,230 --> 00:05:38,520
+indicates integer and fv indicates float vector type
+
+82
+00:05:38,520 --> 00:05:42,970
+The difference in size and number of texture
+
+83
+00:05:42,970 --> 00:05:49,020
+map images and screen pixels fundamentally causes aliasing problems in texture mapping
+
+84
+00:05:49,020 --> 00:05:52,410
+In this picture, the checkered texture map image
+
+85
+00:05:52,410 --> 00:05:57,360
+is mapped to a perspective projected trapezoid
+
+86
+00:05:57,360 --> 00:06:00,710
+Points corresponding to texture and polygon
+
+87
+00:06:00,710 --> 00:06:03,400
+are indicated in the picture
+
+88
+00:06:03,400 --> 00:06:08,270
+The trapezoid is rasterized and the texture colors corresponding to each pixel are extracted and mapped
+
+89
+00:06:08,270 --> 00:06:13,680
+as shown on the far right
+
+90
+00:06:13,680 --> 00:06:19,310
+However, it is clear that this is not a good outcome
+
+91
+00:06:19,310 --> 00:06:25,730
+To prevent this, anti-aliasing techniques should be used
+
+92
+00:06:25,730 --> 00:06:29,820
+This picture shows a case where aliasing occurs
+
+93
+00:06:29,820 --> 00:06:32,840
+and the texture is broken on the left,
+
+94
+00:06:32,840 --> 00:06:36,160
+and the texture mapping result is improved
+
+95
+00:06:36,160 --> 00:06:39,700
+using anti-aliasing on the right
+
+96
+00:06:39,700 --> 00:06:43,850
+Simply, there is a filtering method that determines the color
+
+97
+00:06:43,850 --> 00:06:47,710
+by averaging the surrounding texel colors
+
+98
+00:06:47,710 --> 00:06:50,750
+There is also an oversampling method that splits the
+
+99
+00:06:50,750 --> 00:06:54,170
+texture's texels into smaller pieces
+
+100
+00:06:54,170 --> 00:06:57,720
+Let’s learn more about filtering methods
+
+101
+00:06:57,720 --> 00:07:01,040
+There are cases where the texture needs to be enlarged or reduced
+
+102
+00:07:01,040 --> 00:07:03,350
+because the sizes of the pixels representing the texture
+
+103
+00:07:03,350 --> 00:07:07,990
+and polygon do not match exactly
+
+104
+00:07:07,990 --> 00:07:11,930
+For example, when one pixel
+
+105
+00:07:11,930 --> 00:07:15,180
+P of a polygon is mapped to a quadrilateral
+
+106
+00:07:15,180 --> 00:07:21,890
+made up of multiple texels in the texture,
+
+107
+00:07:21,890 --> 00:07:26,840
+the texture image must be minified
+
+108
+00:07:26,840 --> 00:07:29,760
+Conversely, if multiple pixels of a polygon
+
+109
+00:07:29,760 --> 00:07:33,740
+are mapped to only one texel of a texture,
+
+110
+00:07:33,740 --> 00:07:39,330
+the texture image must be magnified
+
+111
+00:07:39,330 --> 00:07:42,200
+In most cases, the pixel of the polygon
+
+112
+00:07:42,200 --> 00:07:46,690
+on which the texture will be applied
+
+113
+00:07:46,690 --> 00:07:51,630
+does not exactly match the texel of the texture image
+
+114
+00:07:51,630 --> 00:07:56,660
+In this case, the process of calculating the color to be painted on the polygon
+
+115
+00:07:56,660 --> 00:08:00,920
+pixel from the texture image is called "texture
+
+116
+00:08:00,920 --> 00:08:03,670
+filtering." "Nearest filter" is OpenGL's default filtering method
+
+117
+00:08:03,670 --> 00:08:07,440
+When using nearest filtering, if a red polygon pixel spans multiple texture
+
+118
+00:08:07,440 --> 00:08:10,340
+texels as shown in the picture,
+
+119
+00:08:10,340 --> 00:08:17,490
+the texel color of the texture to which the center of the pixel belongs is used
+
+120
+00:08:17,490 --> 00:08:21,250
+There is no additional processing
+
+121
+00:08:21,250 --> 00:08:24,980
+such as combining the surrounding colors and averaging them
+
+122
+00:08:24,980 --> 00:08:29,100
+This method helps reduce texture mapping time,
+
+123
+00:08:29,100 --> 00:08:32,050
+but the quality of texture
+
+124
+00:08:32,050 --> 00:08:34,720
+mapping across the entire polygon is likely to be not very good
+
+125
+00:08:34,720 --> 00:08:38,320
+This is because the colors of neighboring polygon pixels may change rapidly
+
+126
+00:08:38,320 --> 00:08:42,070
+Since it is the default method,
+
+127
+00:08:42,070 --> 00:08:44,340
+there is no need to specify the filtering method separately,
+
+128
+00:08:44,340 --> 00:08:48,060
+but you can specify the GL_TEXTURE_MIN_FILTER
+
+129
+00:08:48,060 --> 00:08:53,500
+or GL_TEXTURE_MAG_FILTER value of glTexParameteri
+
+130
+00:08:53,500 --> 00:09:01,190
+as GL_NEAREST like this
+
+131
+00:09:01,190 --> 00:09:03,050
+The method introduced this time is a method of interpolation
+
+132
+00:09:03,050 --> 00:09:08,230
+by averaging the texel colors around the texel
+
+133
+00:09:08,230 --> 00:09:12,420
+containing the specified texture
+
+134
+00:09:12,420 --> 00:09:14,750
+coordinates (center of the polygon pixel), and is called a “linear
+
+135
+00:09:14,750 --> 00:09:20,070
+filter” or “bilinear filter.”
+
+136
+00:09:20,070 --> 00:09:23,720
+In the picture, a red polygon pixel spans multiple texels,
+
+137
+00:09:23,720 --> 00:09:26,000
+and the color that is determined
+
+138
+00:09:26,000 --> 00:09:32,400
+is the interpolated color that is appropriately averaged
+
+139
+00:09:32,400 --> 00:09:35,080
+To explain this method simply, the closer
+
+140
+00:09:35,080 --> 00:09:37,250
+the distance from the polygon pixel center to the texel center
+
+141
+00:09:37,250 --> 00:09:42,180
+being considered, the more the proportion of the color
+
+142
+00:09:42,180 --> 00:09:46,750
+of that texel is increased
+
+143
+00:09:46,750 --> 00:09:50,290
+To perform texture filtering using this method,
+
+144
+00:09:50,290 --> 00:09:55,280
+GL_TEXTURE_MIN_FILTER or GL_TEXTURE_MAG_FILTER must be specified
+
+145
+00:09:55,280 --> 00:09:59,120
+in the GL_LINEAR method
+
+146
+00:09:59,120 --> 00:10:01,770
+We compared the texture mapping results when using the nearest filter
+
+147
+00:10:01,770 --> 00:10:07,420
+and linear filter, respectively
+
+148
+00:10:07,420 --> 00:10:09,980
+In the case of the nearest filter on the left,
+
+149
+00:10:09,980 --> 00:10:13,680
+the color change of the texture texel
+
+150
+00:10:13,680 --> 00:10:15,780
+mapped to each screen pixel became severe,
+
+151
+00:10:15,780 --> 00:10:19,290
+so the results were so bad
+
+152
+00:10:19,290 --> 00:10:21,650
+that the boundaries of neighboring pixels could not be recognized
+
+153
+00:10:21,650 --> 00:10:26,600
+However, each pixel color appears very clearly
+
+154
+00:10:26,600 --> 00:10:28,680
+In the case of the linear filter on the right,
+
+155
+00:10:28,680 --> 00:10:32,400
+the color of the pixel is determined
+
+156
+00:10:32,400 --> 00:10:35,280
+by interpolating the colors of neighboring texels,
+
+157
+00:10:35,280 --> 00:10:36,970
+so you can see that
+
+158
+00:10:36,970 --> 00:10:40,440
+the color of neighboring pixels changes flexibly
+
+159
+00:10:40,440 --> 00:10:44,180
+However, overall, the results after texture
+
+160
+00:10:44,180 --> 00:10:50,520
+mapping show that the boundaries of objects appearing in the image are not clear
+
+161
+00:10:50,520 --> 00:10:55,930
+It can be seen as a trade-off between the two methods
+
+162
+00:10:55,930 --> 00:10:58,910
+Mipmap refers to preparing texture
+
+163
+00:10:58,910 --> 00:11:03,800
+images of different sizes in advance before rendering
+
+164
+00:11:03,800 --> 00:11:07,180
+OpenGL has a command that allows the user to load one texture image
+
+165
+00:11:07,180 --> 00:11:11,330
+and then create and prepare a mipmap
+
+166
+00:11:11,330 --> 00:11:16,360
+This way, you can select and use an appropriate texture image
+
+167
+00:11:16,360 --> 00:11:20,970
+according to the size of the texture image that occupies the screen pixel
+
+168
+00:11:20,970 --> 00:11:24,540
+In other words, keep the screen pixel size and texture
+
+169
+00:11:24,540 --> 00:11:28,920
+texel size as similar as possible
+
+170
+00:11:28,920 --> 00:11:31,740
+Whether or not the Mipmap method is used
+
+171
+00:11:31,740 --> 00:11:36,730
+has a significant impact on the quality of the final texture mapping
+
+172
+00:11:36,730 --> 00:11:40,220
+In the picture, the left side represents the case where mipmap is not applied,
+
+173
+00:11:40,220 --> 00:11:44,330
+and the right side represents the case where mipmap is applied
+
+174
+00:11:44,330 --> 00:11:48,330
+This is another comparison
+
+175
+00:11:48,330 --> 00:11:50,530
+result with and without mipmap applied
+
+176
+00:11:50,530 --> 00:11:53,740
+The picture on the left is without a mipmap,
+
+177
+00:11:53,740 --> 00:11:56,820
+and the picture on the right is with a mipmap
+
+178
+00:11:56,820 --> 00:11:59,590
+If there is no mipmap, the difference in texture color
+
+179
+00:11:59,590 --> 00:12:03,660
+mapped between screen pixel neighbors may become severe,
+
+180
+00:12:03,660 --> 00:12:07,690
+causing severe flickering
+
+181
+00:12:07,690 --> 00:12:10,360
+OpenGL has a function that creates a mipmap chain
+
+182
+00:12:10,360 --> 00:12:14,180
+of the loaded texture image
+
+183
+00:12:14,180 --> 00:12:19,210
+The function used there is “glGenerateMipmaps”
+
+184
+00:12:19,210 --> 00:12:23,270
+GL_TEXTURE_2D can usually be used
+
+185
+00:12:23,270 --> 00:12:25,650
+as a parameter target
+
+186
+00:12:25,650 --> 00:12:28,090
+The mipmap chain continues
+
+187
+00:12:28,090 --> 00:12:31,860
+until only one pixel remains at the final level
+
+188
+00:12:31,860 --> 00:12:35,530
+As the level increases, the resolution decreases
+
+189
+00:12:35,530 --> 00:12:39,220
+by 1/2 of the width and height,
+
+190
+00:12:39,220 --> 00:12:42,830
+and the size of the image, that is,
+
+191
+00:12:42,830 --> 00:12:48,010
+the width and height, also decreases by 1/2 of the lower level
+
+192
+00:12:48,010 --> 00:12:52,120
+After a mipmap is created, you can use the option with the mipmap function
+
+193
+00:12:52,120 --> 00:12:55,660
+added as a filtering method
+
+194
+00:12:55,660 --> 00:13:01,290
+First, the NEAREST in front of GL_NEAREST_MIPMAP_NEAREST
+
+195
+00:13:01,290 --> 00:13:03,600
+indicates how to simply take the color
+
+196
+00:13:03,600 --> 00:13:07,330
+of the nearest texel, as mentioned before
+
+197
+00:13:07,330 --> 00:13:10,040
+NEAREST at the end
+
+198
+00:13:10,040 --> 00:13:13,190
+indicates which of several mipmaps to use
+
+199
+00:13:13,190 --> 00:13:19,020
+Since it is NEAREST, the image with the texel size
+
+200
+00:13:19,020 --> 00:13:24,020
+most similar to the current pixel size
+
+201
+00:13:24,020 --> 00:13:27,340
+is selected from the mipmap hierarchy
+
+202
+00:13:27,340 --> 00:13:31,770
+GL_LINEAR_MIPMAP_NEAREST uses the LINEAR interpolation method
+
+203
+00:13:31,770 --> 00:13:37,720
+when determining color, and simply selects nearest mipmap
+
+204
+00:13:37,720 --> 00:13:40,740
+GL_NEAREST_MIPMAP_LINEAR determines the color using the NEAREST method,
+
+205
+00:13:40,740 --> 00:13:43,750
+but creates and uses a texture image of a new size
+
+206
+00:13:43,750 --> 00:13:48,260
+by linearly interpolating between two mipmap images
+
+207
+00:13:48,260 --> 00:13:51,980
+with texels of the size
+
+208
+00:13:51,980 --> 00:13:57,410
+most similar to the size of the screen pixel
+
+209
+00:13:57,410 --> 00:14:02,760
+GL_LINEAR_MIPMAP_LINEAR calculates color determination using a linear method and mipmap image determination
+
+210
+00:14:02,760 --> 00:14:08,100
+using a linear interpolation method
+
+211
+00:14:08,100 --> 00:14:12,820
+Therefore, it takes the most calculation time
+
+212
+00:14:12,820 --> 00:14:16,790
+Let's take an example of texture mapping using Mipmap
+
+213
+00:14:16,790 --> 00:14:21,730
+Base texture has a resolution of 8x4
+
+214
+00:14:21,730 --> 00:14:25,380
+OpenGL generates a mipmap
+
+215
+00:14:25,380 --> 00:14:28,710
+by averaging 2x2 texels from the base texture
+
+216
+00:14:28,710 --> 00:14:32,590
+and reducing the image
+
+217
+00:14:32,590 --> 00:14:38,770
+For example, texel '3' of the lower 4x2 mipmap was obtained by averaging the 2x2 texels (4,
+
+218
+00:14:38,770 --> 00:14:48,260
+2, 3, 3) of the upper base texture
+
+219
+00:14:48,260 --> 00:14:53,450
+Now assume that one pixel of the rasterized triangle is mapped to 2x2
+
+220
+00:14:53,450 --> 00:15:00,150
+texels of the base texture
+
+221
+00:15:00,150 --> 00:15:03,050
+In other words, this is a case
+
+222
+00:15:03,050 --> 00:15:07,110
+where minification must be applied to texels
+
+223
+00:15:07,110 --> 00:15:08,710
+In this case, rather than mapping
+
+224
+00:15:08,710 --> 00:15:13,860
+the 2x2 texels of the base texture,
+
+225
+00:15:13,860 --> 00:15:18,380
+we can fetch and use texel '3' of the pre-created 4x2 mipmap
+
+226
+00:15:18,380 --> 00:15:21,990
+This can reduce computation time in the middle of rendering
+
+227
+00:15:21,990 --> 00:15:27,220
+and, depending on how you create
+
+228
+00:15:27,220 --> 00:15:33,350
+the mipmap, can also improve rendering quality
+
+229
+00:15:33,350 --> 00:15:38,280
+This is the first example program where texture mapping is applied
+
+230
+00:15:38,280 --> 00:15:42,890
+The same texture is mapped to all six sides of the cube
+
+231
+00:15:42,890 --> 00:15:46,500
+Now let's take a look again at the texture
+
+232
+00:15:46,500 --> 00:15:50,760
+coordinates part of the Cube class defined in cube.h
+
+233
+00:15:50,760 --> 00:15:54,790
+Cube has 8 vertexes from index 0 to 7
+
+234
+00:15:54,790 --> 00:15:58,240
+as shown in the picture above
+
+235
+00:15:58,240 --> 00:16:04,920
+Among these, considering the rectangle (v0, v1, v2, v3), which is the front
+
+236
+00:16:04,920 --> 00:16:09,120
+face, the texture coordinates (1,0), (0, 0), (0, 1), (1,1)
+
+237
+00:16:09,120 --> 00:16:14,930
+are v0, v1, v2, respectively. , mapped to v3
+
+238
+00:16:14,930 --> 00:16:18,520
+Just look at the yellow arrows in the picture
+
+239
+00:16:18,520 --> 00:16:24,900
+In other words, the left and right and top and bottom of the texture image are reversed and mapped
+
+240
+00:16:24,900 --> 00:16:27,200
+This is not a common case, and in fact,
+
+241
+00:16:27,200 --> 00:16:32,280
+in this example, the texture map image is symmetrical left and right and top and bottom,
+
+242
+00:16:32,280 --> 00:16:35,340
+so there is no major problem
+
+243
+00:16:35,340 --> 00:16:38,750
+However, in the general case, it is correct
+
+244
+00:16:38,750 --> 00:16:42,070
+that (1, 1), (0,1), (0, 0), and (1,0)
+
+245
+00:16:42,070 --> 00:16:45,170
+are mapped to v0, v1, v2, and v3, respectively
+
+246
+00:16:45,170 --> 00:16:50,580
+When filling data into the VBO in the buffer initialization
+
+247
+00:16:50,580 --> 00:16:52,220
+part of cube.h, the size of the total sum of position,
+
+248
+00:16:52,220 --> 00:16:55,740
+normal, color, and texture coordinates
+
+249
+00:16:55,740 --> 00:16:59,470
+data is first set as glBufferData
+
+250
+00:16:59,470 --> 00:17:03,370
+Then, I used glBufferSubData
+
+251
+00:17:03,370 --> 00:17:09,180
+to give an offset of vSize+nSize+cSize
+
+252
+00:17:09,180 --> 00:17:10,960
+and copy
+
+253
+00:17:10,960 --> 00:17:15,540
+the texture coordinates data to the buffer
+
+254
+00:17:15,540 --> 00:17:18,610
+At the very end of the cube's buffer initialization,
+
+255
+00:17:18,610 --> 00:17:22,810
+in the part where data is transmitted to the vertex shader,
+
+256
+00:17:22,810 --> 00:17:25,060
+the texture coordinates data is transmitted to the
+
+257
+00:17:25,060 --> 00:17:31,610
+shader's attribute variable number 3
+
+258
+00:17:31,610 --> 00:17:35,830
+The data type is an array of 2D vectors
+
+259
+00:17:35,830 --> 00:17:39,020
+Texture coordinates that have been ignored in the vertex shader
+
+260
+00:17:39,020 --> 00:17:42,930
+must now be used
+
+261
+00:17:42,930 --> 00:17:44,800
+Texture coordinates, a 2D vector,
+
+262
+00:17:44,800 --> 00:17:48,690
+were transferred from the application program
+
+263
+00:17:48,690 --> 00:17:54,250
+to the variable "aTexCoord" at location number 3
+
+264
+00:17:54,250 --> 00:17:57,640
+These texture coordinates are passed to the fragment shader,
+
+265
+00:17:57,640 --> 00:18:03,540
+using the out variable toTexCoord
+
+266
+00:18:03,540 --> 00:18:07,750
+In the fragment shader, the texture coordinates passed from the vertex shader
+
+267
+00:18:07,750 --> 00:18:13,980
+are received as the in variable "toTexCoord"
+
+268
+00:18:13,980 --> 00:18:18,100
+Please note that the type and name of toTexCoord are the same as the out
+
+269
+00:18:18,100 --> 00:18:21,240
+variable in the vertex shader
+
+270
+00:18:21,240 --> 00:18:26,270
+The type of shader variable for texture map is sampler2D
+
+271
+00:18:26,270 --> 00:18:31,190
+"Texture" is a predefined shader
+
+272
+00:18:31,190 --> 00:18:35,510
+function that calculates the color of the texel
+
+273
+00:18:35,510 --> 00:18:37,440
+given as texture coordinates from the texture map,
+
+274
+00:18:37,440 --> 00:18:43,350
+and this color is assigned as the final color, FragColor
+
+275
+00:18:43,350 --> 00:18:50,890
+The application program uses the above
+
+276
+00:18:50,890 --> 00:18:55,410
+two lines to include the stb_image.h library function
+
+277
+00:18:55,410 --> 00:19:03,130
+stbi_image can read image files in various formats,
+
+278
+00:19:03,130 --> 00:19:08,570
+such as bmp, jpg, and png, as textures
+
+279
+00:19:08,570 --> 00:19:12,230
+In the loadTexture() function, all preparations for texture mapping are made
+
+280
+00:19:12,230 --> 00:19:16,430
+and the texture image is loaded
+
+281
+00:19:16,430 --> 00:19:21,970
+First, generate a texture object and receive its ID
+
+282
+00:19:21,970 --> 00:19:26,730
+As with VAO and VBO, multiple texture
+
+283
+00:19:26,730 --> 00:19:30,580
+objects can be generated simultaneously
+
+284
+00:19:30,580 --> 00:19:33,530
+glBindTexture is a command to use this texture object
+
+285
+00:19:33,530 --> 00:19:38,310
+in all subsequent
+
+286
+00:19:38,310 --> 00:19:42,840
+texture-related operations or rendering
+
+287
+00:19:42,840 --> 00:19:47,500
+In specifying the method to be used in texture
+
+288
+00:19:47,500 --> 00:19:50,020
+wrapping, GL_CLAMP is used in the s direction and GL_REPEAT
+
+289
+00:19:50,020 --> 00:19:54,710
+is used in the t direction
+
+290
+00:19:54,710 --> 00:19:58,540
+In fact, in this program, wrapping is not used
+
+291
+00:19:58,540 --> 00:20:05,330
+because the texture coordinates never deviate from the [0,1] range in both
+
+292
+00:20:05,330 --> 00:20:08,470
+the horizontal and vertical directions
+
+293
+00:20:08,470 --> 00:20:12,260
+In this part, filtering methods for texture
+
+294
+00:20:12,260 --> 00:20:13,900
+minification and maginification
+
+295
+00:20:13,900 --> 00:20:16,540
+are specified,
+
+296
+00:20:16,540 --> 00:20:21,490
+and all are specified in the GL_LINEAR method
+
+297
+00:20:21,490 --> 00:20:25,140
+The next part of loadTexture reads the image file into stbi_load,
+
+298
+00:20:25,140 --> 00:20:31,500
+a library function of stb_image
+
+299
+00:20:31,500 --> 00:20:37,440
+It also handles errors that may occur while reading the file
+
+300
+00:20:37,440 --> 00:20:43,120
+The glTexImage2D function copies
+
+301
+00:20:43,120 --> 00:20:47,160
+image data to the currently bound texture object
+
+302
+00:20:47,160 --> 00:20:49,810
+The glGenerateMipmap function generates
+
+303
+00:20:49,810 --> 00:20:54,500
+a mipmap of a texture object

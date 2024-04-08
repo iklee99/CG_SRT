@@ -1,0 +1,539 @@
+﻿1
+00:00:03,000 --> 00:00:06,120
+So far we have been using NDC,
+
+2
+00:00:06,120 --> 00:00:10,580
+or normalized device coordinates.
+
+3
+00:00:10,580 --> 00:00:16,340
+In NDC, the range of each coordinate in the x, y, and z directions
+
+4
+00:00:16,340 --> 00:00:19,820
+is limited to -1 to 1.
+
+5
+00:00:19,820 --> 00:00:22,480
+Objects that are not within this range
+
+6
+00:00:22,480 --> 00:00:24,810
+become invisible.
+
+7
+00:00:24,810 --> 00:00:29,590
+However, this limitation is too unrealistic.
+
+8
+00:00:29,590 --> 00:00:32,730
+From now on, we will be free to freely
+
+9
+00:00:32,730 --> 00:00:35,970
+decide which space we will use.
+
+10
+00:00:35,970 --> 00:00:40,890
+And in the vertex shader,
+
+11
+00:00:40,890 --> 00:00:43,860
+this random space is transformed into NDC
+
+12
+00:00:43,860 --> 00:00:50,360
+and the resulting gl_position is sent to the hardware.
+
+13
+00:00:50,360 --> 00:00:55,440
+In the picture, you can see that a light green rectangle
+
+14
+00:00:55,440 --> 00:01:00,810
+and a yellow quadrant are drawn at the camera boundary
+
+15
+00:01:00,810 --> 00:01:05,690
+in a user-defined space of size 90x90.
+
+16
+00:01:05,690 --> 00:01:12,490
+Vertex shader converts this to NDC
+
+17
+00:01:12,490 --> 00:01:15,090
+between [-1,1] and sends it to HW.
+
+18
+00:01:15,090 --> 00:01:21,040
+Vertex coordinates are converted through several steps.
+
+19
+00:01:21,040 --> 00:01:23,500
+Coordinates defined in local space are converted to world space
+
+20
+00:01:23,500 --> 00:01:27,930
+by applying model transformation
+
+21
+00:01:27,930 --> 00:01:33,020
+and to view space by applying view transformation.
+
+22
+00:01:33,020 --> 00:01:39,180
+Additionally, it is converted to clip space through projection transformation,
+
+23
+00:01:39,180 --> 00:01:42,910
+and then finally converted to screen space
+
+24
+00:01:42,910 --> 00:01:49,140
+using viewport transformation and displayed on the screen.
+
+25
+00:01:49,140 --> 00:01:53,330
+Local space, also called object space,
+
+26
+00:01:53,330 --> 00:01:58,190
+is a coordinate system limited to one specific object.
+
+27
+00:01:58,190 --> 00:02:02,700
+For example, let's say
+
+28
+00:02:02,700 --> 00:02:06,650
+you are modeling a cube in graphics software such as Blender.
+
+29
+00:02:06,650 --> 00:02:10,960
+Usually, a cube initially has a basic shape centered at the origin,
+
+30
+00:02:10,960 --> 00:02:15,740
+with one edge having a length of 1.
+
+31
+00:02:15,740 --> 00:02:19,480
+Afterwards, we change its size
+
+32
+00:02:19,480 --> 00:02:23,670
+or relocate it.
+
+33
+00:02:23,670 --> 00:02:28,600
+The coordinate system that an object initially uses to define itself
+
+34
+00:02:28,600 --> 00:02:31,640
+is called local space,
+
+35
+00:02:31,640 --> 00:02:37,840
+and the coordinates of vertices are called local coordinates.
+
+36
+00:02:37,840 --> 00:02:40,400
+Objects defined in local space
+
+37
+00:02:40,400 --> 00:02:45,990
+are gathered in one space to form a scene.
+
+38
+00:02:45,990 --> 00:02:51,050
+For example, a house, a tree, a car, etc.
+
+39
+00:02:51,050 --> 00:02:54,010
+all appear in one scene.
+
+40
+00:02:54,010 --> 00:02:57,700
+Houses, trees, and cars
+
+41
+00:02:57,700 --> 00:03:02,830
+were all initially modeled in their own local spaces.
+
+42
+00:03:02,830 --> 00:03:08,040
+At this time, for example, the center of each object would be the origin
+
+43
+00:03:08,040 --> 00:03:12,860
+and its size would not be relatively adjusted.
+
+44
+00:03:12,860 --> 00:03:17,300
+These objects must be collected and placed in one space,
+
+45
+00:03:17,300 --> 00:03:22,630
+and this one space is called world space.
+
+46
+00:03:22,630 --> 00:03:24,220
+World coordinates refer to coordinates
+
+47
+00:03:24,220 --> 00:03:28,650
+defined within this world space.
+
+48
+00:03:28,650 --> 00:03:33,590
+In the picture, the two rectangles that make up the robot's arm
+
+49
+00:03:33,590 --> 00:03:39,700
+were initially modeled as A and B in each local space.
+
+50
+00:03:39,700 --> 00:03:43,150
+To move and place them in one world
+
+51
+00:03:43,150 --> 00:03:48,660
+space, transformation from local to world space is required.
+
+52
+00:03:48,660 --> 00:03:53,570
+The matrix representing the transformation from local to world
+
+53
+00:03:53,570 --> 00:03:56,080
+is called the model matrix,
+
+54
+00:03:56,080 --> 00:04:01,390
+and this transformation is called model transformation.
+
+55
+00:04:01,390 --> 00:04:05,550
+In the picture, you can see that
+
+56
+00:04:05,550 --> 00:04:07,990
+the cube is moved from local space
+
+57
+00:04:07,990 --> 00:04:12,630
+to world space according to model transformation.
+
+58
+00:04:12,630 --> 00:04:16,560
+Objects in world space
+
+59
+00:04:16,560 --> 00:04:18,920
+are converted to view space by view transformation.
+
+60
+00:04:18,920 --> 00:04:24,170
+View space is also called camera space or eye space.
+
+61
+00:04:24,170 --> 00:04:29,180
+View space is a space defined around the user's view.
+
+62
+00:04:29,180 --> 00:04:34,810
+In the picture, when objects exist in world space,
+
+63
+00:04:34,810 --> 00:04:38,540
+the view space is a space that has the center of projection, or COP, as the origin,
+
+64
+00:04:38,540 --> 00:04:44,080
+which is the location of the camera.
+
+65
+00:04:44,080 --> 00:04:47,730
+View transformation, expressed as a view
+
+66
+00:04:47,730 --> 00:04:53,010
+matrix, converts coordinates from world to view space.
+
+67
+00:04:53,010 --> 00:04:58,420
+Next is the conversion from view space to clip space.
+
+68
+00:04:58,420 --> 00:05:01,860
+Clip space is defined by clip coordinates,
+
+69
+00:05:01,860 --> 00:05:05,110
+and these clip coordinates are NDC.
+
+70
+00:05:05,110 --> 00:05:08,800
+As I've mentioned several times, the final output
+
+71
+00:05:08,800 --> 00:05:11,480
+gl_Position from the vertex shader must have
+
+72
+00:05:11,480 --> 00:05:15,000
+NDC coordinates.
+
+73
+00:05:15,000 --> 00:05:18,950
+In NDC, all coordinates of x,y,z
+
+74
+00:05:18,950 --> 00:05:23,290
+are in the range of [-1, 1].
+
+75
+00:05:23,290 --> 00:05:26,800
+All coordinates that do not fall within this
+
+76
+00:05:26,800 --> 00:05:29,040
+range will not be displayed on the screen.
+
+77
+00:05:29,040 --> 00:05:38,170
+For example, points like (-2,0,0), (0.2,0.5,-5).
+
+78
+00:05:38,170 --> 00:05:41,660
+The conversion from view space to clip space
+
+79
+00:05:41,660 --> 00:05:45,480
+is done by a projection matrix.
+
+80
+00:05:45,480 --> 00:05:50,510
+In particular, projection transformation can be separated into two steps:
+
+81
+00:05:50,510 --> 00:05:56,000
+projection and perspective division.
+
+82
+00:05:56,000 --> 00:06:00,110
+The last remaining step is to convert the clip
+
+83
+00:06:00,110 --> 00:06:02,150
+space coordinates to screen space
+
+84
+00:06:02,150 --> 00:06:05,620
+coordinates through viewport transformation.
+
+85
+00:06:05,620 --> 00:06:10,560
+Screen space is the pixel coordinates that appear on the actual display screen.
+
+86
+00:06:10,560 --> 00:06:12,710
+In fact, this viewport
+
+87
+00:06:12,710 --> 00:06:17,120
+transformation occurs automatically by the graphics H/W,
+
+88
+00:06:17,120 --> 00:06:20,730
+so we don't have to do any programming.
+
+89
+00:06:20,730 --> 00:06:23,540
+The Model Transformation program shows the process of converting a basic cube
+
+90
+00:06:23,540 --> 00:06:27,140
+with local coordinates into model transformation,
+
+91
+00:06:27,140 --> 00:06:30,670
+moving it to world space,
+
+92
+00:06:30,670 --> 00:06:34,610
+and converting it to NDC coordinates through appropriate view
+
+93
+00:06:34,610 --> 00:06:40,120
+and projection transformation.
+
+94
+00:06:40,120 --> 00:06:43,940
+In the vertex shader, vectors of position,
+
+95
+00:06:43,940 --> 00:06:48,820
+normal, color, and texture coordinates through which Cube class data are transmitted
+
+96
+00:06:48,820 --> 00:06:52,170
+are defined as attribute variables.
+
+97
+00:06:52,170 --> 00:06:58,730
+Of course normal and texture coordinates are not used yet.
+
+98
+00:06:58,730 --> 00:07:01,290
+toColor is an out variable to be passed from the vertex shader
+
+99
+00:07:01,290 --> 00:07:05,300
+to the fragment shader,
+
+100
+00:07:05,300 --> 00:07:10,310
+and is passed from the application program to the vertex shader.
+
+101
+00:07:10,310 --> 00:07:14,660
+gl_Position is calculated by multiplying the original position by the model,
+
+102
+00:07:14,660 --> 00:07:20,730
+view, and projection matrices in that order.
+
+103
+00:07:20,730 --> 00:07:25,230
+In the render() function, we create a model, view, and projection
+
+104
+00:07:25,230 --> 00:07:27,460
+matrix and pass them to the vertex
+
+105
+00:07:27,460 --> 00:07:30,210
+shader for transformation.
+
+106
+00:07:30,210 --> 00:07:33,400
+First, initialize the three 4x4 matrices called model,
+
+107
+00:07:33,400 --> 00:07:39,150
+view, and projection with identity.
+
+108
+00:07:39,150 --> 00:07:42,970
+For cube animation, find out the current time
+
+109
+00:07:42,970 --> 00:07:46,330
+and set the shader to use.
+
+110
+00:07:46,330 --> 00:07:50,020
+The model transformation initially rotates the cube
+
+111
+00:07:50,020 --> 00:07:54,230
+around the z-axis by an angle
+
+112
+00:07:54,230 --> 00:07:58,050
+equal to the current time multiplied by rotSpeed.
+
+113
+00:07:58,050 --> 00:08:01,120
+The top right picture shows the initial position,
+
+114
+00:08:01,120 --> 00:08:06,400
+the one below it is rotated about the z-axis.
+
+115
+00:08:06,400 --> 00:08:12,600
+We then rotate the cube by -55 degrees about the x-axis.
+
+116
+00:08:12,600 --> 00:08:18,080
+This creates a model transformation for the cube,
+
+117
+00:08:18,080 --> 00:08:22,480
+and animation becomes possible over time.
+
+118
+00:08:22,480 --> 00:08:27,290
+For view transformation, the camera must be positioned appropriately,
+
+119
+00:08:27,290 --> 00:08:31,040
+and the glm::lookAt function was used here.
+
+120
+00:08:31,040 --> 00:08:36,230
+The camera was located at (0, 0, 3), and the point the camera was looking at, that is,
+
+121
+00:08:36,230 --> 00:08:39,930
+the target point, was set as the origin.
+
+122
+00:08:39,930 --> 00:08:45,590
+The camera's up vector was set to (0, 1, 0), that is, the Y axis.
+
+123
+00:08:45,590 --> 00:08:48,360
+How this lookAt function is implemented
+
+124
+00:08:48,360 --> 00:08:52,510
+will be explained in detail in the next slide.
+
+125
+00:08:52,510 --> 00:08:55,860
+For reference, OpenGL's default
+
+126
+00:08:55,860 --> 00:09:01,030
+camera is located at the origin and faces the -Z direction.
+
+127
+00:09:01,030 --> 00:09:03,580
+Next, the projection matrix has
+
+128
+00:09:03,580 --> 00:09:07,450
+a convenient function called glm::perspective.
+
+129
+00:09:07,450 --> 00:09:14,370
+The parameters of this function are FOV (field of view), aspect ratio, near, and far.
+
+130
+00:09:14,370 --> 00:09:17,410
+A slide will be devoted later
+
+131
+00:09:17,410 --> 00:09:22,040
+to the implementation of projection transformation
+
+132
+00:09:22,040 --> 00:09:25,770
+along with their meaning.
+
+133
+00:09:25,770 --> 00:09:29,370
+Now, pass the model, view,
+
+134
+00:09:29,370 --> 00:09:33,280
+and projection matrices to the shader in the form of uniform
+
+135
+00:09:33,280 --> 00:09:35,180
+variables and draw a cube.

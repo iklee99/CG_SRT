@@ -1,0 +1,531 @@
+﻿1
+00:00:00,000 --> 00:00:03,810
+Let’s start the ArcBall lecture
+
+2
+00:00:03,810 --> 00:00:06,980
+This is a program introducing ArcBall
+
+3
+00:00:06,980 --> 00:00:11,000
+You can rotate objects by holding down the left mouse
+
+4
+00:00:11,000 --> 00:00:14,010
+button and dragging
+
+5
+00:00:14,010 --> 00:00:17,380
+By pressing the 'a' key, you can toggle between the modes
+
+6
+00:00:17,380 --> 00:00:22,530
+for rotating the camera and rotating the object
+
+7
+00:00:22,530 --> 00:00:26,900
+The 'r' key initializes the arcball interface
+
+8
+00:00:26,900 --> 00:00:28,990
+and returns it to its initial state
+
+9
+00:00:28,990 --> 00:00:32,430
+Arcball is an interface
+
+10
+00:00:32,430 --> 00:00:37,610
+that is implemented as software and allows you to control rotation with just a mouse
+
+11
+00:00:37,610 --> 00:00:43,300
+This is a simulation of an actual trackball device
+
+12
+00:00:43,300 --> 00:00:46,890
+The Trackball device looks like the picture
+
+13
+00:00:46,890 --> 00:00:53,660
+and allows you to enter rotation data by rolling a protruding ball with your hand
+
+14
+00:00:53,660 --> 00:00:59,330
+Now let's place the virtual hemisphere on the computer screen
+
+15
+00:00:59,330 --> 00:01:04,850
+A point (x,y,z) on the hemisphere can be mapped to a point
+
+16
+00:01:04,850 --> 00:01:07,870
+(x,y,0) on the screen
+
+17
+00:01:07,870 --> 00:01:11,610
+Conversely, let's assume that you specify a point
+
+18
+00:01:11,610 --> 00:01:15,290
+(x,y,0) on the screen with the mouse
+
+19
+00:01:15,290 --> 00:01:19,960
+From this point, you can map the points
+
+20
+00:01:19,960 --> 00:01:23,380
+(x,y,z) on the hemisphere
+
+21
+00:01:23,380 --> 00:01:28,360
+The x,y values are the same as coordinates on the screen
+
+22
+00:01:28,360 --> 00:01:33,850
+Since the equation of the sphere is x^2+ y^2 + z^2 = 1,
+
+23
+00:01:33,850 --> 00:01:43,040
+the z value can be found with sqrt(1 - x^2 - y^2)
+
+24
+00:01:43,040 --> 00:01:47,390
+In other words, any location specified on the screen
+
+25
+00:01:47,390 --> 00:01:53,530
+with the mouse can be mapped to 3D point coordinates on the arcball
+
+26
+00:01:53,530 --> 00:01:57,970
+In that case, the corner of the screen
+
+27
+00:01:57,970 --> 00:01:59,690
+other than the part projected on the screen,
+
+28
+00:01:59,690 --> 00:02:04,380
+In other words, how can the coordinates of the part
+
+29
+00:02:04,380 --> 00:02:09,390
+shown in red in the picture be mapped to the hemisphere?
+
+30
+00:02:09,390 --> 00:02:11,640
+The mouse coordinates of this part
+
+31
+00:02:11,640 --> 00:02:15,040
+are changed to the nearest point
+
+32
+00:02:15,040 --> 00:02:18,300
+on the hemisphere for mapping
+
+33
+00:02:18,300 --> 00:02:21,540
+Now let's consider two points
+
+34
+00:02:21,540 --> 00:02:26,940
+p1 and p2 on the hemisphere mapped from two mouse coordinates on the screen
+
+35
+00:02:26,940 --> 00:02:32,800
+Our goal is to obtain the rotation transformation
+
+36
+00:02:32,800 --> 00:02:34,950
+matrix indicated by the input action
+
+37
+00:02:34,950 --> 00:02:39,840
+when the mouse is dragged from p1 to p2
+
+38
+00:02:39,840 --> 00:02:42,360
+To find such a transformation,
+
+39
+00:02:42,360 --> 00:02:48,250
+we need to find the rotation axis and rotation angle
+
+40
+00:02:48,250 --> 00:02:50,460
+The rotation axis can be easily obtained by cross
+
+41
+00:02:50,460 --> 00:02:54,560
+producting the two vectors heading from the origin to points
+
+42
+00:02:54,560 --> 00:02:58,880
+p1 and p2 on the hemisphere
+
+43
+00:02:58,880 --> 00:03:03,020
+The rotation angle can be obtained from the dot
+
+44
+00:03:03,020 --> 00:03:06,970
+product of the p1 and p2 vectors
+
+45
+00:03:06,970 --> 00:03:10,720
+By definition, the dot product of p1 and p2 is the product of the size of p1
+
+46
+00:03:10,720 --> 00:03:16,670
+and the size of p2 multiplied by cos(theta),
+
+47
+00:03:16,670 --> 00:03:22,280
+where theta is the angle between the two vectors p1 and p2
+
+48
+00:03:22,280 --> 00:03:28,110
+The two vectors p1 and p2 are on a unit sphere
+
+49
+00:03:28,110 --> 00:03:30,880
+with a radius of 1, and the magnitude of both vectors is 1
+
+50
+00:03:30,880 --> 00:03:34,970
+Therefore, theta is equal to the arccosine of the dot
+
+51
+00:03:34,970 --> 00:03:37,370
+product of p1 and p2
+
+52
+00:03:37,370 --> 00:03:40,670
+Now, using the rotation axis and angle,
+
+53
+00:03:40,670 --> 00:03:44,640
+you can find the rotation transformation matrix
+
+54
+00:03:44,640 --> 00:03:46,940
+using the “rotation
+
+55
+00:03:46,940 --> 00:03:51,940
+about any axis” or “quaternion” formulas you learned previously
+
+56
+00:03:51,940 --> 00:03:56,760
+Arcball is implemented in our code as the Arcball class,
+
+57
+00:03:56,760 --> 00:04:01,050
+located in arcball.h in the utils folder
+
+58
+00:04:01,050 --> 00:04:03,930
+First, if we look at the member variables,
+
+59
+00:04:03,930 --> 00:04:08,110
+they contain the width and height of the window
+
+60
+00:04:08,110 --> 00:04:11,370
+The mouseEvent variable indicates the state
+
+61
+00:04:11,370 --> 00:04:15,800
+in which the left button of the mouse is pressed
+
+62
+00:04:15,800 --> 00:04:20,740
+rollSpeed is multiplied by the amount of rotation the arcball produces,
+
+63
+00:04:20,740 --> 00:04:23,470
+and serves to control it
+
+64
+00:04:23,470 --> 00:04:28,510
+so that it does not make too much or too little rotation depending on the mouse movement
+
+65
+00:04:28,510 --> 00:04:34,900
+The angle variable stores the rotation angle calculated via the dot product
+
+66
+00:04:34,900 --> 00:04:39,780
+prevPos and currPos store the mouse's previous and current coordinates
+
+67
+00:04:39,780 --> 00:04:43,320
+as the mouse is dragged,
+
+68
+00:04:43,320 --> 00:04:48,120
+representing two points on the arcball hemisphere
+
+69
+00:04:48,120 --> 00:04:51,760
+camAxis stores the rotation axis
+
+70
+00:04:51,760 --> 00:04:55,070
+calculated as the cross product
+
+71
+00:04:55,070 --> 00:05:01,200
+Lastly, xAxis and yAxis are two boolean variables
+
+72
+00:05:01,200 --> 00:05:05,280
+that indicate whether mouse movement in the x or y direction
+
+73
+00:05:05,280 --> 00:05:09,330
+should be applied to rotation
+
+74
+00:05:09,330 --> 00:05:12,720
+Usually, both directions are considered,
+
+75
+00:05:12,720 --> 00:05:16,990
+so both are often set to true
+
+76
+00:05:16,990 --> 00:05:20,700
+The toScreenCoord function of the Arcball class
+
+77
+00:05:20,700 --> 00:05:26,380
+converts a given mouse position
+
+78
+00:05:26,380 --> 00:05:31,100
+(x,y) between (0,0) and (windowWidth, windowHeight) into "glm::vec3 coord",
+
+79
+00:05:31,100 --> 00:05:34,980
+which is normalized coordinates on the hemisphere
+
+80
+00:05:34,980 --> 00:05:41,580
+coord's x, y, and z all have values between [-1, 1]
+
+81
+00:05:41,580 --> 00:05:45,280
+In the part where mouse position coordinates
+
+82
+00:05:45,280 --> 00:05:48,380
+(x, y) are changed between [-1, 1],
+
+83
+00:05:48,380 --> 00:05:51,480
+the glm::clamp function is used to limit the mouse position
+
+84
+00:05:51,480 --> 00:05:55,480
+to only within the window
+
+85
+00:05:55,480 --> 00:06:01,380
+The z-coordinate of coord is calculated using the sphere equation
+
+86
+00:06:01,380 --> 00:06:06,750
+If x^2 + y^2 > 1, that is,
+
+87
+00:06:06,750 --> 00:06:11,110
+the mouse was in the corner of the window,
+
+88
+00:06:11,110 --> 00:06:15,000
+just set coord.z to 0
+
+89
+00:06:15,000 --> 00:06:19,630
+and normalize coord.x and coord.y
+
+90
+00:06:19,630 --> 00:06:22,220
+so that they are on the unit sphere.
+
+91
+00:06:22,220 --> 00:06:26,110
+The cursorCallback function
+
+92
+00:06:26,110 --> 00:06:28,730
+continues to calculate rotation transformation
+
+93
+00:06:28,730 --> 00:06:32,150
+when new coordinates (x, y) are input while the mouse is dragging
+
+94
+00:06:32,150 --> 00:06:34,390
+When the previous position on the hemisphere
+
+95
+00:06:34,390 --> 00:06:39,140
+obtained from mouse input is stored in prevPos,
+
+96
+00:06:39,140 --> 00:06:42,420
+and the position on the hemisphere
+
+97
+00:06:42,420 --> 00:06:46,230
+created from the new mouse position (x, y) is curPos,
+
+98
+00:06:46,230 --> 00:06:50,450
+the angle calculation uses the dot product as mentioned before
+
+99
+00:06:50,450 --> 00:06:55,420
+And the rotation axis is found using the cross product
+
+100
+00:06:55,420 --> 00:06:58,710
+The createRotationMatrix function creates
+
+101
+00:06:58,710 --> 00:07:02,380
+and returns a rotation
+
+102
+00:07:02,380 --> 00:07:05,440
+matrix using the axis and angle obtained through mouse movement
+
+103
+00:07:05,440 --> 00:07:08,900
+Now let's look at main.cpp
+
+104
+00:07:08,900 --> 00:07:11,030
+First, you need to include arcball.h,
+
+105
+00:07:11,030 --> 00:07:14,700
+which contains the arcball class
+
+106
+00:07:14,700 --> 00:07:18,070
+And define arcballSpeed, which can control the rotation
+
+107
+00:07:18,070 --> 00:07:21,530
+speed of the arcball
+
+108
+00:07:21,530 --> 00:07:24,600
+Because the arcball rotates very quickly,
+
+109
+00:07:24,600 --> 00:07:29,400
+arcballSpeed is usually defined as a value less than 1
+
+110
+00:07:29,400 --> 00:07:34,750
+Now create the arcballs you will use using the constructor
+
+111
+00:07:34,750 --> 00:07:37,760
+We defined different arcballs,
+
+112
+00:07:37,760 --> 00:07:40,110
+one for the rotation of the camera view
+
+113
+00:07:40,110 --> 00:07:43,650
+and one for the rotation of the center cube
+
+114
+00:07:43,650 --> 00:07:46,330
+The bool type variable arcballCamRot distinguishes whether the current rotation mode
+
+115
+00:07:46,330 --> 00:07:50,650
+is camera rotation mode
+
+116
+00:07:50,650 --> 00:07:56,800
+(true) or object rotation mode (false)
+
+117
+00:07:56,800 --> 00:08:01,190
+In camera rotation mode, the camera view rotates, and in object rotation mode,
+
+118
+00:08:01,190 --> 00:08:06,350
+the central cube rotates
+
+119
+00:08:06,350 --> 00:08:10,520
+In the render() function, if the camera is in rotation mode, the view matrix
+
+120
+00:08:10,520 --> 00:08:14,100
+obtained with glm::lookAt is further multiplied by the rotation
+
+121
+00:08:14,100 --> 00:08:21,130
+obtained with camArcBall.createViewRotationMatrix()
+
+122
+00:08:21,130 --> 00:08:22,670
+And for the center cube, the rotation matrix
+
+123
+00:08:22,670 --> 00:08:30,100
+obtained with modelArcBall.createRotationMatrix()
+
+124
+00:08:30,100 --> 00:08:35,080
+must be further multiplied by the current model transformation matrix
+
+125
+00:08:35,080 --> 00:08:38,750
+Except for the center cube,
+
+126
+00:08:38,750 --> 00:08:41,860
+the cubes on both sides do not use the arcball interface
+
+127
+00:08:41,860 --> 00:08:45,110
+Therefore, all you have to do
+
+128
+00:08:45,110 --> 00:08:49,690
+is draw a modeling transformation that moves them to the appropriate location
+
+129
+00:08:49,690 --> 00:08:52,870
+In keyboard callback, arcballs
+
+130
+00:08:52,870 --> 00:08:55,840
+are initialized when the 'r' key is entered
+
+131
+00:08:55,840 --> 00:09:02,970
+When the 'a' key is pressed, arcballCamRot changes to toggle
+
+132
+00:09:02,970 --> 00:09:06,980
+In mouse button callback and cursor position
+
+133
+00:09:06,980 --> 00:09:11,360
+callback, you can call the appropriate arcball class functions
